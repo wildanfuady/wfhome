@@ -23,10 +23,325 @@ class Admin extends CI_Controller {
     {
         $data = [
             'judul' 	=> 'Home',
-            'content'	=> 'admin/dashboard'
+            'content'	=> 'admin/dashboard',
+            'pekerjaan' => $this->pekerjaan->getPekerjaan(),
+            'pekerjaan_total'       => $this->pekerjaan->getCountPekerjaan(),
+            'pekerjaan_selesai'     => $this->pekerjaan->getCountPekerjaan('Selesai'),
+            'pekerjaan_progress'    => $this->pekerjaan->getCountPekerjaan('Progress'),
+            'pekerjaan_reject'      => $this->pekerjaan->getCountPekerjaan('Reject')
         ];
         
         $this->load->view('admin/template', $data);
+    }
+
+    public function pengawas()
+    {
+        $data = [
+            'judul' 	=> 'Data Pengawas',
+            'content'	=> 'admin/pengawas/index',
+            'pengawas'  => $this->auth->getUsers('pengawas'),
+            'plugin_datatable' => true
+        ];
+        
+        $this->load->view('admin/template', $data);
+    }
+
+    public function tambah_pengawas()
+    {
+        $data = [
+            'judul' 	=> 'Tambah Pengawas',
+            'content'	=> 'admin/pengawas/create'
+        ];
+        
+        $this->load->view('admin/template', $data);
+    }
+
+    public function store_pengawas()
+    {
+        $this->form_validation->set_rules('username', 'Username', 'required|alpha_numeric|min_length[5]|max_length[35]');
+        $this->form_validation->set_rules('fullname', 'Fullname', 'required|alpha_numeric_spaces|min_length[5]|max_length[35]');
+        $this->form_validation->set_rules('email', 'Email', 'required|valid_email|min_length[5]|max_length[50]');
+        $this->form_validation->set_rules('password', 'password', 'required|min_length[5]|max_length[50]');
+
+        $username        = htmlspecialchars(strip_tags(xss($this->input->post('username'))));
+        $fullname        = htmlspecialchars(strip_tags(xss($this->input->post('fullname'))));
+        $email           = htmlspecialchars(strip_tags(xssForMail($this->input->post('email'))));
+        $password        = htmlspecialchars(strip_tags(xss($this->input->post('password'))));
+
+        if($this->form_validation->run() == FALSE){
+
+            $errors = $this->form_validation->error_array();
+            $this->session->set_flashdata('errors', $errors);
+            $this->session->set_flashdata('inputs', $this->input->post());
+			redirect(base_url('admin/tambah-pengawas'));
+
+        } else {
+
+            $data = [
+                'username'      => $username,
+                'fullname'      => $fullname,
+                'email'         => $email,
+                'password'      => password_hash($password, PASSWORD_DEFAULT),
+                'pass_show'     => $password,
+                'level'         => 'pengawas',
+                'status'        => 'activated',
+                'created_at'    => date('Y-m-d H:i:s')
+            ];
+
+            $simpan   = $this->auth->insert($data);
+
+            if($simpan == true){
+                $this->session->set_flashdata('success', 'Berhasil Menambah Data Pengawas');
+                redirect(base_url('admin/pengawas'));
+            } else {
+                $this->session->set_flashdata('error', 'Gagal Menambah Data Pengawas');
+                redirect(base_url('admin/pengawas'));
+            }
+
+        }
+    }
+
+    public function edit_pengawas($id)
+    {
+        $pengawas       = $this->auth->getAccount($id);
+        if(!empty($pengawas)){
+            $data = [
+                'judul' 	=> 'Edit Pengawas',
+                'content'	=> 'admin/pengawas/edit',
+                'pengawas'  => $pengawas
+            ];
+            $this->load->view('admin/template', $data);
+        } else {
+            $this->session->set_flashdata('error', 'Gagal Menampilkan Data Pengawas');
+            redirect(base_url('admin/pengawas'));
+        }
+    }
+
+    public function update_pengawas($id)
+    {
+        $pengawas       = $this->auth->getAccount($id);
+        if(!empty($pengawas)){
+
+            $this->form_validation->set_rules('username', 'Username', 'required|alpha_numeric|min_length[5]|max_length[35]');
+            $this->form_validation->set_rules('fullname', 'Fullname', 'required|alpha_numeric_spaces|min_length[5]|max_length[35]');
+            $this->form_validation->set_rules('email', 'Email', 'required|valid_email|min_length[5]|max_length[50]');
+            $this->form_validation->set_rules('password', 'password', 'required|min_length[5]|max_length[50]');
+
+            $username        = htmlspecialchars(strip_tags(xss($this->input->post('username'))));
+            $fullname        = htmlspecialchars(strip_tags(xss($this->input->post('fullname'))));
+            $email           = htmlspecialchars(strip_tags(xssForMail($this->input->post('email'))));
+            $password        = htmlspecialchars(strip_tags(xss($this->input->post('password'))));
+
+            if($this->form_validation->run() == FALSE){
+
+                $errors = $this->form_validation->error_array();
+                $this->session->set_flashdata('errors', $errors);
+                $this->session->set_flashdata('inputs', $this->input->post());
+                redirect(base_url('admin/edit-pengawas/'.$id));
+
+            } else {
+
+                $data = [
+                    'username'      => $username,
+                    'fullname'      => $fullname,
+                    'email'         => $email,
+                    'password'      => password_hash($password, PASSWORD_DEFAULT),
+                    'pass_show'     => $password,
+                    'created_at'    => date('Y-m-d H:i:s')
+                ];
+
+                $ubah   = $this->auth->update($data, $id);
+
+                if($ubah == true){
+                    $this->session->set_flashdata('info', 'Berhasil Mengubah Data Pengawas');
+                    redirect(base_url('admin/pengawas'));
+                } else {
+                    $this->session->set_flashdata('error', 'Gagal Mengubah Data Pengawas');
+                    redirect(base_url('admin/pengawas'));
+                }
+
+            }   
+
+        } else {
+            $this->session->set_flashdata('error', 'Gagal Menampilkan Data Pengawas');
+            redirect(base_url('admin/pengawas'));
+        }
+    }
+
+    public function hapus_pengawas($id = null)
+    {
+        $pengawas       = $this->auth->getAccount($id);
+
+        if(!empty($pengawas)){
+
+            $hapus   = $this->auth->delete($id);
+
+            if($hapus == true){
+                $this->session->set_flashdata('warning', 'Berhasil Menghapus Data Pengawas');
+                redirect(base_url('admin/pengawas'));
+            } else {
+                $this->session->set_flashdata('error', 'Gagal Menghapus Data Pengawas');
+                redirect(base_url('admin/pengawas'));
+            }
+        } else {
+            $this->session->set_flashdata('error', 'Gagal Menampilkan Data Pengawas');
+            redirect(base_url('admin/pengawas'));
+        }
+    }
+
+    public function manajer()
+    {
+        $data = [
+            'judul' 	=> 'Data Manajer',
+            'content'	=> 'admin/manajer/index',
+            'manajer'  => $this->auth->getUsers('manajer'),
+            'plugin_datatable' => true
+        ];
+        
+        $this->load->view('admin/template', $data);
+    }
+
+    public function tambah_manajer()
+    {
+        $data = [
+            'judul' 	=> 'Tambah Manajer',
+            'content'	=> 'admin/manajer/create'
+        ];
+        
+        $this->load->view('admin/template', $data);
+    }
+
+    public function store_manajer()
+    {
+        $this->form_validation->set_rules('username', 'Username', 'required|alpha_numeric|min_length[5]|max_length[35]');
+        $this->form_validation->set_rules('fullname', 'Fullname', 'required|alpha_numeric_spaces|min_length[5]|max_length[35]');
+        $this->form_validation->set_rules('email', 'Email', 'required|valid_email|min_length[5]|max_length[50]');
+        $this->form_validation->set_rules('password', 'password', 'required|min_length[5]|max_length[50]');
+
+        $username        = htmlspecialchars(strip_tags(xss($this->input->post('username'))));
+        $fullname        = htmlspecialchars(strip_tags(xss($this->input->post('fullname'))));
+        $email           = htmlspecialchars(strip_tags(xssForMail($this->input->post('email'))));
+        $password        = htmlspecialchars(strip_tags(xss($this->input->post('password'))));
+
+        if($this->form_validation->run() == FALSE){
+
+            $errors = $this->form_validation->error_array();
+            $this->session->set_flashdata('errors', $errors);
+            $this->session->set_flashdata('inputs', $this->input->post());
+			redirect(base_url('admin/tambah-manajer'));
+
+        } else {
+
+            $data = [
+                'username'      => $username,
+                'fullname'      => $fullname,
+                'email'         => $email,
+                'password'      => password_hash($password, PASSWORD_DEFAULT),
+                'pass_show'     => $password,
+                'level'         => 'manajer',
+                'status'        => 'activated',
+                'created_at'    => date('Y-m-d H:i:s')
+            ];
+
+            $simpan   = $this->auth->insert($data);
+
+            if($simpan == true){
+                $this->session->set_flashdata('success', 'Berhasil Menambah Data Manajer');
+                redirect(base_url('admin/manajer'));
+            } else {
+                $this->session->set_flashdata('error', 'Gagal Menambah Data Manajer');
+                redirect(base_url('admin/manajer'));
+            }
+
+        }
+    }
+
+    public function edit_manajer($id)
+    {
+        $manajer       = $this->auth->getAccount($id);
+        if(!empty($manajer)){
+            $data = [
+                'judul' 	=> 'Edit Manajer',
+                'content'	=> 'admin/manajer/edit',
+                'manajer'  => $manajer
+            ];
+            $this->load->view('admin/template', $data);
+        } else {
+            $this->session->set_flashdata('error', 'Gagal Menampilkan Data Manajer');
+            redirect(base_url('admin/manajer'));
+        }
+    }
+
+    public function update_manajer($id)
+    {
+        $manajer       = $this->auth->getAccount($id);
+        if(!empty($manajer)){
+
+            $this->form_validation->set_rules('username', 'Username', 'required|alpha_numeric|min_length[5]|max_length[35]');
+            $this->form_validation->set_rules('fullname', 'Fullname', 'required|alpha_numeric_spaces|min_length[5]|max_length[35]');
+            $this->form_validation->set_rules('email', 'Email', 'required|valid_email|min_length[5]|max_length[50]');
+            $this->form_validation->set_rules('password', 'password', 'required|min_length[5]|max_length[50]');
+
+            $username        = htmlspecialchars(strip_tags(xss($this->input->post('username'))));
+            $fullname        = htmlspecialchars(strip_tags(xss($this->input->post('fullname'))));
+            $email           = htmlspecialchars(strip_tags(xssForMail($this->input->post('email'))));
+            $password        = htmlspecialchars(strip_tags(xss($this->input->post('password'))));
+
+            if($this->form_validation->run() == FALSE){
+
+                $errors = $this->form_validation->error_array();
+                $this->session->set_flashdata('errors', $errors);
+                $this->session->set_flashdata('inputs', $this->input->post());
+                redirect(base_url('admin/edit-manajer/'.$id));
+
+            } else {
+
+                $data = [
+                    'username'      => $username,
+                    'fullname'      => $fullname,
+                    'email'         => $email,
+                    'password'      => password_hash($password, PASSWORD_DEFAULT),
+                    'pass_show'     => $password,
+                    'created_at'    => date('Y-m-d H:i:s')
+                ];
+
+                $ubah   = $this->auth->update($data, $id);
+
+                if($ubah == true){
+                    $this->session->set_flashdata('info', 'Berhasil Mengubah Data Manajer');
+                    redirect(base_url('admin/manajer'));
+                } else {
+                    $this->session->set_flashdata('error', 'Gagal Mengubah Data Manajer');
+                    redirect(base_url('admin/manajer'));
+                }
+
+            }   
+
+        } else {
+            $this->session->set_flashdata('error', 'Gagal Menampilkan Data Manajer');
+            redirect(base_url('admin/manajer'));
+        }
+    }
+
+    public function hapus_manajer($id = null)
+    {
+        $manajer       = $this->auth->getAccount($id);
+
+        if(!empty($manajer)){
+
+            $hapus   = $this->auth->delete($id);
+
+            if($hapus == true){
+                $this->session->set_flashdata('warning', 'Berhasil Menghapus Data Manajer');
+                redirect(base_url('admin/manajer'));
+            } else {
+                $this->session->set_flashdata('error', 'Gagal Menghapus Data Manajer');
+                redirect(base_url('admin/manajer'));
+            }
+        } else {
+            $this->session->set_flashdata('error', 'Gagal Menampilkan Data Manajer');
+            redirect(base_url('admin/manajer'));
+        }
     }
 
     public function pekerjaan()

@@ -22,9 +22,24 @@ class Auth_model extends CI_Model
         return $this->db->get_where($this->table, [$this->primaryKey => $id])->row_array();
     }
 
+    public function getUsers($status)
+    {
+        return $this->db->get_where($this->table, ['level' => $status])->result_array();
+    }
+
+    public function insert($data)
+    {
+        return $this->db->insert($this->table, $data);
+    }
+
     public function update($data, $id)
     {
         return $this->db->where($this->primaryKey, $id)->update($this->table, $data);
+    }
+
+    public function delete($id)
+    {
+        return $this->db->where($this->primaryKey, $id)->delete($this->table);
     }
 }
 ?>

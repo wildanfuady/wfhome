@@ -32,6 +32,22 @@
             </a>
           </li>
           <li class="nav-item active">
+            <a href="<?= base_url('admin/manajer') ?>" class="nav-link">
+              <i class="nav-icon fas fa-user"></i>
+              <p>
+                Data Manajer
+              </p>
+            </a>
+          </li>
+          <li class="nav-item active">
+            <a href="<?= base_url('admin/pengawas') ?>" class="nav-link">
+              <i class="nav-icon fas fa-user"></i>
+              <p>
+                Data Pengawas
+              </p>
+            </a>
+          </li>
+          <li class="nav-item active">
             <a href="<?= base_url('admin/pekerjaan') ?>" class="nav-link">
               <i class="nav-icon fas fa-th"></i>
               <p>

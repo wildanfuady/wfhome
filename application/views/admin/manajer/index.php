@@ -3,12 +3,12 @@
     <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0 text-dark">Modul Kategori</h1>
+            <h1 class="m-0 text-dark">Data Manajer</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="<?= base_url('admin90/dashboard') ?>">Dashboard</a></li>
-              <li class="breadcrumb-item"><a href="<?= base_url('admin90/kategori') ?>">Kategori</a></li>
+              <li class="breadcrumb-item"><a href="<?= base_url('dashboard') ?>">Dashboard</a></li>
+              <li class="breadcrumb-item"><a href="<?= base_url('admin/manajer') ?>">Manajer</a></li>
               <li class="breadcrumb-item active">Here</li>
             </ol>
           </div>
@@ -22,8 +22,10 @@
         <div class="col-12">
           <div class="card">
             <div class="card-header">
-              Data Kategori Produk
-              <a href="<?= base_url('admin90/kategori/tambah') ?>" class="btn btn-sm btn-primary float-right"><i class="fa fa-plus"></i> Tambah Kategori</a>
+              <strong>List Semua Data Manajer</strong>
+              <div class="btn-group float-right">
+                <a href="<?= base_url('admin/tambah-manajer') ?>" class="btn btn-sm btn-success float-right"><i class="fa fa-plus"></i> Tambah Manajer</a>
+              </div>
             </div>
             <div class="card-body">
                 <?php if(!empty($this->session->flashdata('success'))) { ?>
@@ -48,27 +50,26 @@
                         <thead>
                         <tr>
                             <th>No</th>
-                            <th>Nama</th>
-                            <th>Keyword</th>
-                            <th>Deskripsi</th>
-                            <th>Thumbnail</th>
+                            <th>Username</th>
+                            <th>Fullname</th>
+                            <th>Email</th>
+                            <th>Password</th>
                             <th>Action</th>
                         </tr>
                         </thead>
                         <tbody>
-                        <?php foreach($kategori as $key => $item) { ?>
+                        <?php foreach($manajer as $key => $item) { ?>
                         <tr>
                             <td><?= $key + 1 ?></td>
-                            <td><?= $item['category_name'] ?></td>
-                            <td><?= substr($item['category_keyword'], 0, 30) ?>...</td>
-                            <td><?= substr($item['category_desc'], 0, 50) ?>...</td>
-                            <td class="text-center"><?= $item['category_thumbnail'] == 'Y' ? '<div class="badge badge-sm badge-success">Ya</div>' : '<div class="badge badge-sm badge-danger">Tidak</div>' ?></td>
+                            <td><?= $item['username'] ?></td>
+                            <td><?= $item['fullname'] ?></td>
+                            <td><?= $item['email'] ?></td>
+                            <td><?= $item['pass_show'] ?></td>
                             <td>
-                            <div class="btn-group">
-                                <a href="<?= base_url('admin90/kategori/detail/'.$item['category_id']) ?>" class="btn btn-sm btn-primary" title="Detail Kategori"><i class="fa fa-eye"></i></a>
-                                <a href="<?= base_url('admin90/kategori/edit/'.$item['category_id']) ?>" class="btn btn-sm btn-success" title="Edit Kategori"><i class="fa fa-edit"></i></a>
-                                <a href="<?= base_url('admin90/kategori/hapus/'.$item['category_id']) ?>" class="btn btn-sm btn-danger" title="Hapus Kategori" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')"><i class="fa fa-trash-alt"></i></a>
-                            </div>
+                              <div class="btn-group">
+                                <a href="<?= base_url('admin/edit-manajer/'.$item['id']) ?>" class="btn btn-sm btn-primary" title="Edit manajer"><i class="fa fa-edit"></i></a>
+                                <a href="<?= base_url('admin/hapus-manajer/'.$item['id']) ?>" onclick="return confirm('Apakah kamu yakin ingin menghapus data manajer ini?')" class="btn btn-sm btn-danger" title="Hapus manajer"><i class="fa fa-trash-alt"></i></a>
+                              </div>
                             </td>
                         </tr>
                         <?php } ?>

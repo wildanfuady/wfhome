@@ -3,12 +3,12 @@
     <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0 text-dark">Modul Page</h1>
+            <h1 class="m-0 text-dark">Data Pengawas</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="<?= base_url('admin90/dashboard') ?>">Dashboard</a></li>
-              <li class="breadcrumb-item"><a href="<?= base_url('admin90/page') ?>">Page</a></li>
+              <li class="breadcrumb-item"><a href="<?= base_url('dashboard') ?>">Dashboard</a></li>
+              <li class="breadcrumb-item"><a href="<?= base_url('admin/pengawas') ?>">Pengawas</a></li>
               <li class="breadcrumb-item active">Here</li>
             </ol>
           </div>
@@ -22,8 +22,10 @@
         <div class="col-12">
           <div class="card">
             <div class="card-header">
-              Data Page
-              <a href="<?= base_url('admin90/page/tambah') ?>" class="btn btn-sm btn-primary float-right"><i class="fa fa-plus"></i> Tambah Page</a>
+              <strong>List Semua Data Pengawas</strong>
+              <div class="btn-group float-right">
+                <a href="<?= base_url('admin/tambah-pengawas') ?>" class="btn btn-sm btn-success float-right"><i class="fa fa-plus"></i> Tambah Pengawas</a>
+              </div>
             </div>
             <div class="card-body">
                 <?php if(!empty($this->session->flashdata('success'))) { ?>
@@ -47,21 +49,26 @@
                     <table id="table" class="table table-sm table-bordered table-hover">
                         <thead>
                         <tr>
-                            <th width="50">No</th>
-                            <th>Title</th>
-                            <th width="150" class="text-center">Action</th>
+                            <th>No</th>
+                            <th>Username</th>
+                            <th>Fullname</th>
+                            <th>Email</th>
+                            <th>Password</th>
+                            <th>Action</th>
                         </tr>
                         </thead>
                         <tbody>
-                        <?php foreach($pages as $key => $item) { ?>
+                        <?php foreach($pengawas as $key => $item) { ?>
                         <tr>
                             <td><?= $key + 1 ?></td>
-                            <td><?= $item['page_title'] ?></td>
-                            <td class="text-center">
+                            <td><?= $item['username'] ?></td>
+                            <td><?= $item['fullname'] ?></td>
+                            <td><?= $item['email'] ?></td>
+                            <td><?= $item['pass_show'] ?></td>
+                            <td>
                               <div class="btn-group">
-                                <a href="<?= base_url('page/'.$item['page_slug']) ?>" class="btn btn-sm btn-primary" title="Detail Page" target="_blank"><i class="fa fa-eye"></i></a>
-                                <a href="<?= base_url('admin90/page/edit/'.$item['page_id']) ?>" class="btn btn-sm btn-success" title="Edit Page"><i class="fa fa-edit"></i></a>
-                                <a href="<?= base_url('admin90/page/hapus/'.$item['page_id']) ?>" class="btn btn-sm btn-danger" title="Hapus Page" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')"><i class="fa fa-trash-alt"></i></a>
+                                <a href="<?= base_url('admin/edit-pengawas/'.$item['id']) ?>" class="btn btn-sm btn-primary" title="Edit Pengawas"><i class="fa fa-edit"></i></a>
+                                <a href="<?= base_url('admin/hapus-pengawas/'.$item['id']) ?>" onclick="return confirm('Apakah kamu yakin ingin menghapus data pengawas ini?')" class="btn btn-sm btn-danger" title="Hapus Pengawas"><i class="fa fa-trash-alt"></i></a>
                               </div>
                             </td>
                         </tr>

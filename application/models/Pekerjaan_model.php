@@ -14,10 +14,13 @@ class Pekerjaan_model extends CI_Model
             return $this->db->get($this->table)->result_array();
         }
     }
-    public function countCategory()
+    public function getCountPekerjaan($status = null)
     {
-        $query = $this->db->query("SELECT COUNT(*) as total FROM $this->table");
-        return $query->row_array();
+        if($status != null){
+            return $this->db->get_where($this->table, ['pekerjaan_status' => $status])->num_rows();
+        } else {
+            return $this->db->get($this->table)->num_rows();
+        }
     }
     public function getCategoryBySlug($slug = null)
     {
