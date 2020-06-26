@@ -24,16 +24,24 @@
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
           <li class="nav-item active">
-            <a href="<?= base_url('dashboard') ?>" class="nav-link">
+            <a href="<?= base_url('admin/dashboard') ?>" class="nav-link">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>
                 Dashboard
               </p>
             </a>
           </li>
+          <li class="nav-item active">
+            <a href="<?= base_url('admin/pekerjaan') ?>" class="nav-link">
+              <i class="nav-icon fas fa-th"></i>
+              <p>
+                Data Pekerjaan
+              </p>
+            </a>
+          </li>
           <li class="nav-header">SETTING</li>
           <li class="nav-item">
-            <a href="<?= base_url('akun') ?>" class="nav-link">
+            <a href="<?= base_url('admin/akun') ?>" class="nav-link">
               <i class="nav-icon fas fa-user"></i>
               <p>
                 Manajemen Akun

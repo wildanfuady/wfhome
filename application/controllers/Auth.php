@@ -56,17 +56,25 @@ class Auth extends CI_Controller {
 
 				if(password_verify($password, $cek_login['password'])){
 
+					$this->session->set_userdata('id', $cek_login['id']);
+					$this->session->set_userdata('name', $cek_login['fullname']);
+					$this->session->set_userdata('username', $cek_login['username']);
+					$this->session->set_userdata('email', $cek_login['email']);
+					$this->session->set_userdata('level', $cek_login['level']);
+					$this->session->set_userdata('status', $cek_login['status']);
+
 					if($cek_login['status'] == "activated" && $cek_login['level'] == "admin"){
 
-						$this->session->set_userdata('id', $cek_login['id']);
-						$this->session->set_userdata('name', $cek_login['fullname']);
-						$this->session->set_userdata('username', $cek_login['username']);
-						$this->session->set_userdata('email', $cek_login['email']);
-						$this->session->set_userdata('level', $cek_login['level']);
-						$this->session->set_userdata('status', $cek_login['status']);
-
-						redirect(base_url('dashboard')); 
+						redirect(base_url('admin/dashboard')); 
 					
+					} else if($cek_login['status'] == "activated" && $cek_login['level'] == "pengawas"){
+
+						redirect(base_url('admin/pengawas')); 
+
+					} else if($cek_login['status'] == "activated" && $cek_login['level'] == "manajer"){
+
+						redirect(base_url('admin/manajer')); 
+						
 					} else {
 
 						$errors = ['errors' => 'Email atau password yang Anda masukan salah'];

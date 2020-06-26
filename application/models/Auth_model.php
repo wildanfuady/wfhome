@@ -16,5 +16,15 @@ class Auth_model extends CI_Model
             return array();
         }
     }
+
+    public function getAccount($id)
+    {
+        return $this->db->get_where($this->table, [$this->primaryKey => $id])->row_array();
+    }
+
+    public function update($data, $id)
+    {
+        return $this->db->where($this->primaryKey, $id)->update($this->table, $data);
+    }
 }
 ?>
