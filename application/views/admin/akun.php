@@ -1,0 +1,96 @@
+<div class="content-wrapper">
+  <div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1 class="m-0 text-dark">Setting Admin</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="<?= base_url('admin90/dashboard') ?>">Dashboard</a></li>
+              <li class="breadcrumb-item"><a href="<?= base_url('admin90/setting') ?>">Setting</a></li>
+              <li class="breadcrumb-item active">Here</li>
+            </ol>
+          </div>
+        </div>
+    </div>
+  </div>
+
+  <section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-header">
+                Data Admin
+            </div>
+            <?= form_open_multipart('admin90/akun/update/'.$setting['admin_id']) ?>
+            <div class="card-body">
+              <?php
+                if(!empty($this->session->flashdata('info'))) { ?>
+                <div class="alert alert-info">
+                    <?= $this->session->flashdata('info') ?>
+                </div>
+                <?php }
+                $errors = $this->session->flashdata('errors');
+                if(!empty($errors)) { ?>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="alert alert-danger">
+                            <b>Warning!</b> Something it's wrong:
+                            <ul>
+                            <?php foreach($errors as $key => $error) { ?>
+                                <li><?= $error ?></li>
+                            <?php } ?>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <?php } ?>
+                <div class="form-group">
+                    <label for="">Username</label>
+                    <?= form_input('admin_username', $setting['admin_username'], ['class' => 'form-control', 'placeholder' => 'Username', 'required' => 'required']) ?>
+                </div>
+                <div class="form-group">
+                    <label for="">Name</label>
+                    <?= form_input('admin_name', $setting['admin_name'], ['class' => 'form-control', 'placeholder' => 'Nama', 'required' => 'required']) ?>
+                </div>
+                <div class="form-group">
+                    <label for="">Email</label>
+                    <?= form_input('admin_email', $setting['admin_email'], ['class' => 'form-control', 'placeholder' => 'Email']) ?>
+                </div>
+                <div class="form-group">
+                    <label for="">Password</label><br/><span class="text-sm">Kosongkan saja jika tidak ingin mengubah password.</span>
+                    <?= form_password('admin_password', '', ['class' => 'form-control', 'placeholder' => 'Password']) ?>
+                </div>
+                <div class="row">
+                  <div class="col-md-1">
+                  <label for="">Avatar</label>
+                    <img src="<?= base_url('assets/img/admin/'.$setting['admin_image']) ?>" alt="" class="img-fluid">
+                  </div>
+                  <div class="col-md-11">
+                    <div class="form-group">
+                      <span class="text-sm">Kosongkan saja jika tidak ingin mengganti gambar. Gambar yang diupload hanya bisa bertipe jpg, jpeg atau png dengan ukuran kurang dari 1 mb.</span>
+                      <div class="input-group">
+                        <div class="custom-file">
+                          <?= form_upload('admin_image', '', ['class' => 'custom-file-input', 'id' => 'exampleInputFile']) ?>
+                          <label class="custom-file-label" for="exampleInputFile">Choose file</label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+            </div>
+            <div class="card-footer">
+                <button type="reset" class="btn btn-danger"><i class="fa fa-times-circle"></i> RESET</button>
+                <button type="submit" class="btn btn-success float-right"><i class="fa fa-check-circle"></i> UPDATE</button>
+            </div>
+            <?= form_close() ?>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
