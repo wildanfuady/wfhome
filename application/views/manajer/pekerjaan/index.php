@@ -24,8 +24,8 @@
             <div class="card-header">
               Data Pekerjaan
               <div class="btn-group float-right">
-                <a href="<?= base_url('pengawas/print-pekerjaan-with-pdf') ?>" class="btn btn-sm btn-danger float-right"><i class="fa fa-print"></i> Print Pekerjaan (PDF)</a>
-                <a href="<?= base_url('pengawas/print-pekerjaan-with-excel') ?>" class="btn btn-sm btn-success float-right"><i class="fa fa-print"></i> Print Pekerjaan (Excel)</a>
+                <a href="<?= base_url('manajer/print-pekerjaan-with-pdf') ?>" class="btn btn-sm btn-danger float-right"><i class="fa fa-print"></i> Print Pekerjaan (PDF)</a>
+                <a href="<?= base_url('manajer/print-pekerjaan-with-excel') ?>" class="btn btn-sm btn-success float-right"><i class="fa fa-print"></i> Print Pekerjaan (Excel)</a>
               </div>
             </div>
             <div class="card-body">
@@ -52,6 +52,7 @@
                         <tr>
                             <th>No</th>
                             <th>Nama Pekerjaan</th>
+                            <th>Jumlah</th>
                             <th>Nama Kontraktor</th>
                             <th>Jumlah Pekerja</th>
                             <th>Tanggal Mulai</th>
@@ -65,7 +66,20 @@
                         <?php foreach($pekerjaan as $key => $item) { ?>
                         <tr>
                             <td><?= $key + 1 ?></td>
-                            <td><?= $item['pekerjaan_nama'] ?></td>
+                            <td>
+                              <?php 
+                                if($item['pekerjaan_nama'] == 1){
+                                  echo "Kormersil (Type 32) Rumah";
+                                  $keterangan = " unit";
+                                } else if($item['pekerjaan_nama'] == 2){
+                                  echo "Subsidi (Type 25) Rumah";
+                                } else {
+                                  echo "Sarana dan Prasarana";
+                                  $keterangan = " /m<sup>2</sup>";
+                                }
+                              ?>
+                            </td>
+                            <td><?= $item['pekerjaan_unit'].$keterangan ?></td>
                             <td><?= $item['pekerjaan_kontraktor'] ?></td>
                             <td><?= $item['pekerjaan_jumlah_pekerja'] ?></td>
                             <td><?= date('d-m-Y', strtotime($item['pekerjaan_tgl_mulai'])) ?></td>
@@ -86,8 +100,8 @@
                             </td>
                             <td>
                                 <div class="btn-group">
-                                    <a href="<?= base_url('manajer/status-pekerjaan/'.$item['pekerjaan_id']) ?>" class="btn btn-sm btn-primary" title="Ubah Status Pekerjaan"><i class="fa fa-edit"></i></a>
-                                    <a href="<?= base_url('manajer/hapus-pekerjaan/'.$item['pekerjaan_id']) ?>" class="btn btn-sm btn-danger" title="Hapus Pekerjaan"><i class="fa fa-trash-alt"></i></a>
+                                    <button type="button" onclick="showModalEdit('<?= base_url('manajer/status-pekerjaan/'.$item['pekerjaan_id']) ?>', '<?= $item['pekerjaan_status'] ?>');" class="btn btn-sm btn-primary" title="Ubah Status Pekerjaan"><i class="fa fa-edit"></i></button>
+                                    <a href="<?= base_url('manajer/hapus-pekerjaan/'.$item['pekerjaan_id']) ?>" class="btn btn-sm btn-danger" title="Hapus Pekerjaan" onclick="return confirm('Apakah Anda yakin ingin menghapus data pekerjaan ini?')"><i class="fa fa-trash-alt"></i></a>
                                 </div>
                             </td>
                         </tr>
@@ -102,4 +116,30 @@
     </div>
   </section>
 
+</div>
+
+<div class="modal" id="ubahStatusPekerjaan">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Ubah Status Pekerjaan</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <?= form_open('#', ['id' => 'formUbahStatusPekerjaan']) ?>                      
+      <!-- Modal body -->
+      <div class="modal-body">
+        <label for="">Status Pekerjaan</label>
+        <?= form_dropdown('status_pekerjaan', ['' => 'Pilih Status', 'Pekerjaan Baru' => 'Pekerjaan Baru', 'Progress' => 'Approve', 'Selesai' => 'Selesai', 'Reject' => 'Batalkan'], '', ['class' => 'form-control', 'id' => 'status_pekerjaan']) ?>
+      </div>
+
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-info">Update</button>
+      </div>
+      <?= form_close() ?>
+    </div>
+  </div>
 </div>

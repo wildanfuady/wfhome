@@ -163,19 +163,19 @@ class Pengawas extends CI_Controller {
 
     public function store_pekerjaan()
     {
-        $this->form_validation->set_rules('pekerjaan_nama', 'Nama Pekerjaan', 'required|alpha_numeric_spaces|min_length[5]|max_length[50]');
+        $this->form_validation->set_rules('pekerjaan_tipe', 'Tipe Pekerjaan', 'required');
+        $this->form_validation->set_rules('pekerjaan_unit', 'Jumlah Unit Rumah / Luas Sarana dan Prasarana', 'required|numeric');
         $this->form_validation->set_rules('pekerjaan_kontraktor', 'Nama Kontraktor', 'required|alpha_numeric_spaces|min_length[5]|max_length[100]');
-        $this->form_validation->set_rules('pekerjaan_jumlah_pekerja', 'Jumlah Pekerja', 'required|integer');
         $this->form_validation->set_rules('pekerjaan_tgl_mulai', 'Tanggal Mulai', 'required');
         $this->form_validation->set_rules('pekerjaan_deadline', 'Tanggal Deadline', 'required');
         $this->form_validation->set_rules('pekerjaan_progress', 'Progress', 'required|min_length[1]|max_length[50]');
         $this->form_validation->set_rules('pekerjaan_keterangan', 'Keterangan', 'required|min_length[5]|max_length[50]');
 
-        $nama           = htmlspecialchars(strip_tags(xss($this->input->post('pekerjaan_nama'))));
+        $tipe           = htmlspecialchars(strip_tags(xss($this->input->post('pekerjaan_tipe'))));
+        $unit           = htmlspecialchars(strip_tags(xss($this->input->post('pekerjaan_unit'))));
         $kontraktor     = htmlspecialchars(strip_tags(xss($this->input->post('pekerjaan_kontraktor'))));
-        $jumlah         = htmlspecialchars(strip_tags(xss($this->input->post('pekerjaan_jumlah_pekerja'))));
-        $mulai          = htmlspecialchars(strip_tags(xss($this->input->post('pekerjaan_tgl_mulai'))));
-        $deadline       = htmlspecialchars(strip_tags(xss($this->input->post('pekerjaan_deadline'))));
+        $mulai          = $this->input->post('pekerjaan_tgl_mulai');
+        $deadline       = $this->input->post('pekerjaan_deadline');
         $progress       = htmlspecialchars(strip_tags(xss($this->input->post('pekerjaan_progress'))));
         $keterangan     = htmlspecialchars(strip_tags(xss($this->input->post('pekerjaan_keterangan'))));
 
@@ -187,11 +187,26 @@ class Pengawas extends CI_Controller {
 			redirect(base_url('pengawas/tambah-pekerjaan'));
 
         } else {
+            // mengambil selisih hari antara mulai dan tanggal deadline
+            $a = new DateTime($mulai);
+            $b = new DateTime($deadline);
+            $selisih = $b->diff($a)->days + 1;
+            $jumlah_pekerja = 0;
+            if($tipe == 1){ // rumah komersial
+                $jumlah_pekerja = (200 * $unit) / $selisih;
+            } else if($tipe == 2){ // rumah subsidi
+                $jumlah_pekerja = (50 * 1 * $unit) / $selisih;
+            } else { // sarana dan pra sarana
+                $jumlah_pekerja = (1 * $unit) / $selisih;
+            }
+
+            echo $selisih;
 
             $data = [
-                'pekerjaan_nama'            => $nama,
+                'pekerjaan_nama'            => $tipe,
+                'pekerjaan_unit'            => $unit,
                 'pekerjaan_kontraktor'      => $kontraktor,
-                'pekerjaan_jumlah_pekerja'  => $jumlah,
+                'pekerjaan_jumlah_pekerja'  => $jumlah_pekerja,
                 'pekerjaan_tgl_mulai'       => date('Y-m-d H:i:s', strtotime($mulai)),
                 'pekerjaan_deadline'        => date('Y-m-d H:i:s', strtotime($deadline)),
                 'pekerjaan_progress'        => $progress,
@@ -209,6 +224,94 @@ class Pengawas extends CI_Controller {
                 redirect(base_url('pengawas/pekerjaan'));
             }
 
+        }
+    }
+
+    public function edit_pekerjaan($id = null)
+    {
+        $pekerjaan = $this->pekerjaan->getPekerjaan($id);
+
+        if(!empty($pekerjaan)){
+
+            $data = [
+                'judul' 	=> 'Edit Pekerjaan',
+                'content'	=> 'pengawas/pekerjaan/edit',
+                'pekerjaan' => $pekerjaan
+            ];
+            
+            $this->load->view('pengawas/template', $data);
+        } else {
+            echo "Tidak ada data";
+        }
+    }
+
+    public function update_pekerjaan($id = null)
+    {
+        $pekerjaan = $this->pekerjaan->getPekerjaan($id);
+
+        if(!empty($pekerjaan)){
+            $this->form_validation->set_rules('pekerjaan_tipe', 'Tipe Pekerjaan', 'required');
+            $this->form_validation->set_rules('pekerjaan_unit', 'Jumlah Unit Rumah / Luas Sarana dan Prasarana', 'required|numeric');
+            $this->form_validation->set_rules('pekerjaan_kontraktor', 'Nama Kontraktor', 'required|alpha_numeric_spaces|min_length[5]|max_length[100]');
+            $this->form_validation->set_rules('pekerjaan_tgl_mulai', 'Tanggal Mulai', 'required');
+            $this->form_validation->set_rules('pekerjaan_deadline', 'Tanggal Deadline', 'required');
+            $this->form_validation->set_rules('pekerjaan_progress', 'Progress', 'required|min_length[1]|max_length[50]');
+            $this->form_validation->set_rules('pekerjaan_keterangan', 'Keterangan', 'required|min_length[5]|max_length[50]');
+
+            $tipe           = htmlspecialchars(strip_tags(xss($this->input->post('pekerjaan_tipe'))));
+            $unit           = htmlspecialchars(strip_tags(xss($this->input->post('pekerjaan_unit'))));
+            $kontraktor     = htmlspecialchars(strip_tags(xss($this->input->post('pekerjaan_kontraktor'))));
+            $mulai          = $this->input->post('pekerjaan_tgl_mulai');
+            $deadline       = $this->input->post('pekerjaan_deadline');
+            $progress       = htmlspecialchars(strip_tags(xss($this->input->post('pekerjaan_progress'))));
+            $keterangan     = htmlspecialchars(strip_tags(xss($this->input->post('pekerjaan_keterangan'))));
+
+            if($this->form_validation->run() == FALSE){
+
+                $errors = $this->form_validation->error_array();
+                $this->session->set_flashdata('errors', $errors);
+                $this->session->set_flashdata('inputs', $this->input->post());
+                redirect(base_url('pengawas/tambah-pekerjaan'));
+
+            } else {
+                // mengambil selisih hari antara mulai dan tanggal deadline
+                $a = new DateTime($mulai);
+                $b = new DateTime($deadline);
+                $selisih = $b->diff($a)->days + 1;
+                $jumlah_pekerja = 0;
+                if($tipe == 1){ // rumah komersial
+                    $jumlah_pekerja = (200 * $unit) / $selisih;
+                } else if($tipe == 2){ // rumah subsidi
+                    $jumlah_pekerja = (50 * 1 * $unit) / $selisih;
+                } else { // sarana dan pra sarana
+                    $jumlah_pekerja = (1 * $unit) / $selisih;
+                }
+
+                echo $selisih;
+
+                $data = [
+                    'pekerjaan_nama'            => $tipe,
+                    'pekerjaan_unit'            => $unit,
+                    'pekerjaan_kontraktor'      => $kontraktor,
+                    'pekerjaan_jumlah_pekerja'  => $jumlah_pekerja,
+                    'pekerjaan_tgl_mulai'       => date('Y-m-d H:i:s', strtotime($mulai)),
+                    'pekerjaan_deadline'        => date('Y-m-d H:i:s', strtotime($deadline)),
+                    'pekerjaan_progress'        => $progress,
+                    'pekerjaan_keterangan'      => $keterangan,
+                    'pekerjaan_status'          => 'Pekerjaan Baru'
+                ];
+
+                $ubah   = $this->pekerjaan->update($data, $id);
+
+                if($ubah == true){
+                    $this->session->set_flashdata('info', 'Berhasil Mengubah Pekerjaan Baru');
+                    redirect(base_url('pengawas/pekerjaan'));
+                } else {
+                    $this->session->set_flashdata('error', 'Gagal Mengubah Pekerjaan Baru');
+                    redirect(base_url('pengawas/pekerjaan'));
+                }
+
+            }
         }
     }
 

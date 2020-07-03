@@ -159,8 +159,16 @@ $(document).ready(function () {
       return this.href == url;
 
     }).parentsUntil(".nav-sidebar > .nav-treeview").addClass('menu-open') .prev('a').addClass('active'); 
+
   });
   
+</script>
+<script>
+    function showModalEdit(href, status) {
+      $("#ubahStatusPekerjaan").modal("show");
+      $("#formUbahStatusPekerjaan").attr("action", href);
+      $("#status_pekerjaan").val(status);
+    }
 </script>
 </body>
 </html>
