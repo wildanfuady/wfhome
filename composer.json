@@ -13,7 +13,7 @@
 	"require": {
 		"php": ">=5.3.7",
 		"tecnickcom/tcpdf": "^6.3",
-		"phpoffice/phpspreadsheet": "^1.13"
+		"phpoffice/phpspreadsheet": "^1.11"
 	},
 	"suggest": {
 		"paragonie/random_compat": "Provides better randomness in PHP 5.x"
