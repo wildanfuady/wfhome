@@ -79,7 +79,7 @@ class Auth extends CI_Controller {
 
 					} else if($cek_login['status'] == "activated" && $cek_login['level'] == "manajer"){
 
-						redirect(base_url('manajer/manajer')); 
+						redirect(base_url('manajer/dashboard')); 
 
 					} else {
 

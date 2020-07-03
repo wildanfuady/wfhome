@@ -24,7 +24,7 @@
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
           <li class="nav-item active">
-            <a href="<?= base_url('admin/dashboard') ?>" class="nav-link">
+            <a href="<?= base_url('manajer/dashboard') ?>" class="nav-link">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>
                 Dashboard
@@ -32,23 +32,7 @@
             </a>
           </li>
           <li class="nav-item active">
-            <a href="<?= base_url('admin/manajer') ?>" class="nav-link">
-              <i class="nav-icon fas fa-user"></i>
-              <p>
-                Data Manajer
-              </p>
-            </a>
-          </li>
-          <li class="nav-item active">
-            <a href="<?= base_url('admin/pengawas') ?>" class="nav-link">
-              <i class="nav-icon fas fa-user"></i>
-              <p>
-                Data Pengawas
-              </p>
-            </a>
-          </li>
-          <li class="nav-item active">
-            <a href="<?= base_url('admin/pekerjaan') ?>" class="nav-link">
+            <a href="<?= base_url('manajer/pekerjaan') ?>" class="nav-link">
               <i class="nav-icon fas fa-th"></i>
               <p>
                 Data Pekerjaan
@@ -57,7 +41,7 @@
           </li>
           <li class="nav-header">SETTING</li>
           <li class="nav-item">
-            <a href="<?= base_url('admin/akun') ?>" class="nav-link">
+            <a href="<?= base_url('manajer/akun') ?>" class="nav-link">
               <i class="nav-icon fas fa-user"></i>
               <p>
                 Manajemen Akun

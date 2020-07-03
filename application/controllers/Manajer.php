@@ -4,12 +4,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
-class Admin extends CI_Controller {
+class Manajer extends CI_Controller {
 
 	public function __construct() {
 
 		parent::__construct();
-        $this->cek_login_admin();
+        $this->cek_login_manajer();
         $this->load->model('Auth_model', 'auth');
         $this->load->model('Pekerjaan_model', 'pekerjaan');
     }
@@ -23,7 +23,7 @@ class Admin extends CI_Controller {
     {
         $data = [
             'judul' 	=> 'Home',
-            'content'	=> 'admin/dashboard',
+            'content'	=> 'manajer/dashboard',
             'pekerjaan' => $this->pekerjaan->getPekerjaan(),
             'pekerjaan_total'       => $this->pekerjaan->getCountPekerjaan(),
             'pekerjaan_selesai'     => $this->pekerjaan->getCountPekerjaan('Selesai'),
@@ -31,33 +31,28 @@ class Admin extends CI_Controller {
             'pekerjaan_reject'      => $this->pekerjaan->getCountPekerjaan('Reject')
         ];
         
-        $this->load->view('admin/template', $data);
+        $this->load->view('manajer/template', $data);
     }
 
-    public function pengawas()
+    public function akun()
     {
+        $id = $this->session->userdata('id');
+
+        $account = $this->auth->getAccount($id);
+
         $data = [
-            'judul' 	=> 'Data Pengawas',
-            'content'	=> 'admin/pengawas/index',
-            'pengawas'  => $this->auth->getUsers('pengawas'),
-            'plugin_datatable' => true
+            'judul' 	=> 'Akun',
+            'content'	=> 'manajer/akun',
+            'akun'      => $account
         ];
         
-        $this->load->view('admin/template', $data);
+        $this->load->view('manajer/template', $data);
+
     }
 
-    public function tambah_pengawas()
+    public function update_akun()
     {
-        $data = [
-            'judul' 	=> 'Tambah Pengawas',
-            'content'	=> 'admin/pengawas/create'
-        ];
-        
-        $this->load->view('admin/template', $data);
-    }
-
-    public function store_pengawas()
-    {
+        $id = $this->session->userdata('id');
         $this->form_validation->set_rules('username', 'Username', 'required|alpha_numeric|min_length[5]|max_length[35]');
         $this->form_validation->set_rules('fullname', 'Fullname', 'required|alpha_numeric_spaces|min_length[5]|max_length[35]');
         $this->form_validation->set_rules('email', 'Email', 'required|valid_email|min_length[5]|max_length[50]');
@@ -73,7 +68,7 @@ class Admin extends CI_Controller {
             $errors = $this->form_validation->error_array();
             $this->session->set_flashdata('errors', $errors);
             $this->session->set_flashdata('inputs', $this->input->post());
-			redirect(base_url('admin/tambah-pengawas'));
+			redirect(base_url('manajer/akun'));
 
         } else {
 
@@ -82,265 +77,19 @@ class Admin extends CI_Controller {
                 'fullname'      => $fullname,
                 'email'         => $email,
                 'password'      => password_hash($password, PASSWORD_DEFAULT),
-                'pass_show'     => $password,
-                'level'         => 'pengawas',
-                'status'        => 'activated',
-                'created_at'    => date('Y-m-d H:i:s')
+                'pass_show'     => $password
             ];
 
-            $simpan   = $this->auth->insert($data);
+            $ubah   = $this->auth->update($data, $id);
 
-            if($simpan == true){
-                $this->session->set_flashdata('success', 'Berhasil Menambah Data Pengawas');
-                redirect(base_url('admin/pengawas'));
+            if($ubah == true){
+                $this->session->set_flashdata('info', 'Berhasil Mengubah Akun');
+                redirect(base_url('manajer/akun'));
             } else {
-                $this->session->set_flashdata('error', 'Gagal Menambah Data Pengawas');
-                redirect(base_url('admin/pengawas'));
+                $this->session->set_flashdata('error', 'Gagal Mengubah Akun');
+                redirect(base_url('manajer/akun'));
             }
 
-        }
-    }
-
-    public function edit_pengawas($id)
-    {
-        $pengawas       = $this->auth->getAccount($id);
-        if(!empty($pengawas)){
-            $data = [
-                'judul' 	=> 'Edit Pengawas',
-                'content'	=> 'admin/pengawas/edit',
-                'pengawas'  => $pengawas
-            ];
-            $this->load->view('admin/template', $data);
-        } else {
-            $this->session->set_flashdata('error', 'Gagal Menampilkan Data Pengawas');
-            redirect(base_url('admin/pengawas'));
-        }
-    }
-
-    public function update_pengawas($id)
-    {
-        $pengawas       = $this->auth->getAccount($id);
-        if(!empty($pengawas)){
-
-            $this->form_validation->set_rules('username', 'Username', 'required|alpha_numeric|min_length[5]|max_length[35]');
-            $this->form_validation->set_rules('fullname', 'Fullname', 'required|alpha_numeric_spaces|min_length[5]|max_length[35]');
-            $this->form_validation->set_rules('email', 'Email', 'required|valid_email|min_length[5]|max_length[50]');
-            $this->form_validation->set_rules('password', 'password', 'required|min_length[5]|max_length[50]');
-
-            $username        = htmlspecialchars(strip_tags(xss($this->input->post('username'))));
-            $fullname        = htmlspecialchars(strip_tags(xss($this->input->post('fullname'))));
-            $email           = htmlspecialchars(strip_tags(xssForMail($this->input->post('email'))));
-            $password        = htmlspecialchars(strip_tags(xss($this->input->post('password'))));
-
-            if($this->form_validation->run() == FALSE){
-
-                $errors = $this->form_validation->error_array();
-                $this->session->set_flashdata('errors', $errors);
-                $this->session->set_flashdata('inputs', $this->input->post());
-                redirect(base_url('admin/edit-pengawas/'.$id));
-
-            } else {
-
-                $data = [
-                    'username'      => $username,
-                    'fullname'      => $fullname,
-                    'email'         => $email,
-                    'password'      => password_hash($password, PASSWORD_DEFAULT),
-                    'pass_show'     => $password,
-                    'created_at'    => date('Y-m-d H:i:s')
-                ];
-
-                $ubah   = $this->auth->update($data, $id);
-
-                if($ubah == true){
-                    $this->session->set_flashdata('info', 'Berhasil Mengubah Data Pengawas');
-                    redirect(base_url('admin/pengawas'));
-                } else {
-                    $this->session->set_flashdata('error', 'Gagal Mengubah Data Pengawas');
-                    redirect(base_url('admin/pengawas'));
-                }
-
-            }   
-
-        } else {
-            $this->session->set_flashdata('error', 'Gagal Menampilkan Data Pengawas');
-            redirect(base_url('admin/pengawas'));
-        }
-    }
-
-    public function hapus_pengawas($id = null)
-    {
-        $pengawas       = $this->auth->getAccount($id);
-
-        if(!empty($pengawas)){
-
-            $hapus   = $this->auth->delete($id);
-
-            if($hapus == true){
-                $this->session->set_flashdata('warning', 'Berhasil Menghapus Data Pengawas');
-                redirect(base_url('admin/pengawas'));
-            } else {
-                $this->session->set_flashdata('error', 'Gagal Menghapus Data Pengawas');
-                redirect(base_url('admin/pengawas'));
-            }
-        } else {
-            $this->session->set_flashdata('error', 'Gagal Menampilkan Data Pengawas');
-            redirect(base_url('admin/pengawas'));
-        }
-    }
-
-    public function manajer()
-    {
-        $data = [
-            'judul' 	=> 'Data Manajer',
-            'content'	=> 'admin/manajer/index',
-            'manajer'  => $this->auth->getUsers('manajer'),
-            'plugin_datatable' => true
-        ];
-        
-        $this->load->view('admin/template', $data);
-    }
-
-    public function tambah_manajer()
-    {
-        $data = [
-            'judul' 	=> 'Tambah Manajer',
-            'content'	=> 'admin/manajer/create'
-        ];
-        
-        $this->load->view('admin/template', $data);
-    }
-
-    public function store_manajer()
-    {
-        $this->form_validation->set_rules('username', 'Username', 'required|alpha_numeric|min_length[5]|max_length[35]');
-        $this->form_validation->set_rules('fullname', 'Fullname', 'required|alpha_numeric_spaces|min_length[5]|max_length[35]');
-        $this->form_validation->set_rules('email', 'Email', 'required|valid_email|min_length[5]|max_length[50]');
-        $this->form_validation->set_rules('password', 'password', 'required|min_length[5]|max_length[50]');
-
-        $username        = htmlspecialchars(strip_tags(xss($this->input->post('username'))));
-        $fullname        = htmlspecialchars(strip_tags(xss($this->input->post('fullname'))));
-        $email           = htmlspecialchars(strip_tags(xssForMail($this->input->post('email'))));
-        $password        = htmlspecialchars(strip_tags(xss($this->input->post('password'))));
-
-        if($this->form_validation->run() == FALSE){
-
-            $errors = $this->form_validation->error_array();
-            $this->session->set_flashdata('errors', $errors);
-            $this->session->set_flashdata('inputs', $this->input->post());
-			redirect(base_url('admin/tambah-manajer'));
-
-        } else {
-
-            $data = [
-                'username'      => $username,
-                'fullname'      => $fullname,
-                'email'         => $email,
-                'password'      => password_hash($password, PASSWORD_DEFAULT),
-                'pass_show'     => $password,
-                'level'         => 'manajer',
-                'status'        => 'activated',
-                'created_at'    => date('Y-m-d H:i:s')
-            ];
-
-            $simpan   = $this->auth->insert($data);
-
-            if($simpan == true){
-                $this->session->set_flashdata('success', 'Berhasil Menambah Data Manajer');
-                redirect(base_url('admin/manajer'));
-            } else {
-                $this->session->set_flashdata('error', 'Gagal Menambah Data Manajer');
-                redirect(base_url('admin/manajer'));
-            }
-
-        }
-    }
-
-    public function edit_manajer($id)
-    {
-        $manajer       = $this->auth->getAccount($id);
-        if(!empty($manajer)){
-            $data = [
-                'judul' 	=> 'Edit Manajer',
-                'content'	=> 'admin/manajer/edit',
-                'manajer'  => $manajer
-            ];
-            $this->load->view('admin/template', $data);
-        } else {
-            $this->session->set_flashdata('error', 'Gagal Menampilkan Data Manajer');
-            redirect(base_url('admin/manajer'));
-        }
-    }
-
-    public function update_manajer($id)
-    {
-        $manajer       = $this->auth->getAccount($id);
-        if(!empty($manajer)){
-
-            $this->form_validation->set_rules('username', 'Username', 'required|alpha_numeric|min_length[5]|max_length[35]');
-            $this->form_validation->set_rules('fullname', 'Fullname', 'required|alpha_numeric_spaces|min_length[5]|max_length[35]');
-            $this->form_validation->set_rules('email', 'Email', 'required|valid_email|min_length[5]|max_length[50]');
-            $this->form_validation->set_rules('password', 'password', 'required|min_length[5]|max_length[50]');
-
-            $username        = htmlspecialchars(strip_tags(xss($this->input->post('username'))));
-            $fullname        = htmlspecialchars(strip_tags(xss($this->input->post('fullname'))));
-            $email           = htmlspecialchars(strip_tags(xssForMail($this->input->post('email'))));
-            $password        = htmlspecialchars(strip_tags(xss($this->input->post('password'))));
-
-            if($this->form_validation->run() == FALSE){
-
-                $errors = $this->form_validation->error_array();
-                $this->session->set_flashdata('errors', $errors);
-                $this->session->set_flashdata('inputs', $this->input->post());
-                redirect(base_url('admin/edit-manajer/'.$id));
-
-            } else {
-
-                $data = [
-                    'username'      => $username,
-                    'fullname'      => $fullname,
-                    'email'         => $email,
-                    'password'      => password_hash($password, PASSWORD_DEFAULT),
-                    'pass_show'     => $password,
-                    'created_at'    => date('Y-m-d H:i:s')
-                ];
-
-                $ubah   = $this->auth->update($data, $id);
-
-                if($ubah == true){
-                    $this->session->set_flashdata('info', 'Berhasil Mengubah Data Manajer');
-                    redirect(base_url('admin/manajer'));
-                } else {
-                    $this->session->set_flashdata('error', 'Gagal Mengubah Data Manajer');
-                    redirect(base_url('admin/manajer'));
-                }
-
-            }   
-
-        } else {
-            $this->session->set_flashdata('error', 'Gagal Menampilkan Data Manajer');
-            redirect(base_url('admin/manajer'));
-        }
-    }
-
-    public function hapus_manajer($id = null)
-    {
-        $manajer       = $this->auth->getAccount($id);
-
-        if(!empty($manajer)){
-
-            $hapus   = $this->auth->delete($id);
-
-            if($hapus == true){
-                $this->session->set_flashdata('warning', 'Berhasil Menghapus Data Manajer');
-                redirect(base_url('admin/manajer'));
-            } else {
-                $this->session->set_flashdata('error', 'Gagal Menghapus Data Manajer');
-                redirect(base_url('admin/manajer'));
-            }
-        } else {
-            $this->session->set_flashdata('error', 'Gagal Menampilkan Data Manajer');
-            redirect(base_url('admin/manajer'));
         }
     }
 
@@ -348,12 +97,12 @@ class Admin extends CI_Controller {
     {
         $data = [
             'judul' 	=> 'Data Pekerjaan',
-            'content'	=> 'admin/pekerjaan',
+            'content'	=> 'manajer/pekerjaan/index',
             'pekerjaan' => $this->pekerjaan->getPekerjaan(),
             'plugin_datatable' => true
         ];
         
-        $this->load->view('admin/template', $data);
+        $this->load->view('manajer/template', $data);
     }
 
     public function print_pekerjaan_with_pdf($id = null)
@@ -393,10 +142,10 @@ class Admin extends CI_Controller {
         $pdf->Cell(10, 8, $no, 1, 0, 'C');
         $pdf->Cell(55, 8, $item['pekerjaan_nama'], 1, 0, '');
         $pdf->Cell(55, 8, $item['pekerjaan_kontraktor'], 1, 0, '');
-        $pdf->Cell(55, 8, $item['pekerjaan_jumlah_pekerja'], 1, 0, '');
+        $pdf->Cell(35, 8, $item['pekerjaan_jumlah_pekerja'], 1, 0, '');
         $pdf->Cell(35, 8, date('d-m-Y', strtotime($item['pekerjaan_tgl_mulai'])), 1, 0, 'C');
         $pdf->Cell(35, 8, date('d-m-Y', strtotime($item['pekerjaan_deadline'])), 1, 0, 'C');
-        $pdf->Cell(35, 8, $item['pekerjaan_progress'], 1, 0, 'C');
+        $pdf->Cell(50, 8, $item['pekerjaan_progress'], 1, 0, 'C');
     }
 
     public function print_pekerjaan_with_excel($id = null)
@@ -445,75 +194,17 @@ class Admin extends CI_Controller {
                                 ->setCellValue('G' . $kolom, $pekerjaan['pekerjaan_progress']);
             } else {
                 $this->session->set_flashdata('error', 'Gagal Membuat Laporan Pekerjaan');
-                redirect(base_url('admin/pekerjaan'));
+                redirect(base_url('pengawas/pekerjaan'));
             }
         }
         // download spreadsheet dalam bentuk excel .xlsx
         $writer = new Xlsx($spreadsheet);
     
         header('Content-Type: application/vnd.ms-excel');
-        header('Content-Disposition: attachment;filename="Laporan_Pekerjaan_"'.$tanggal.'".xlsx"');
+        header('Content-Disposition: attachment;filename="Laporan_Pekerjaan_"'.str_replace(" ", "_", $pekerjaan['pekerjaan_nama'])."_". $tanggal.'".xlsx"');
         header('Cache-Control: max-age=0');
     
         $writer->save('php://output');
     }
 
-    public function akun()
-    {
-        $id = $this->session->userdata('id');
-
-        $account = $this->auth->getAccount($id);
-
-        $data = [
-            'judul' 	=> 'Akun',
-            'content'	=> 'admin/akun',
-            'akun'      => $account
-        ];
-        
-        $this->load->view('admin/template', $data);
-
-    }
-
-    public function update_akun()
-    {
-        $id = $this->session->userdata('id');
-        $this->form_validation->set_rules('username', 'Username', 'required|alpha_numeric|min_length[5]|max_length[35]');
-        $this->form_validation->set_rules('fullname', 'Fullname', 'required|alpha_numeric_spaces|min_length[5]|max_length[35]');
-        $this->form_validation->set_rules('email', 'Email', 'required|valid_email|min_length[5]|max_length[50]');
-        $this->form_validation->set_rules('password', 'password', 'required|min_length[5]|max_length[50]');
-
-        $username        = htmlspecialchars(strip_tags(xss($this->input->post('username'))));
-        $fullname        = htmlspecialchars(strip_tags(xss($this->input->post('fullname'))));
-        $email           = htmlspecialchars(strip_tags(xssForMail($this->input->post('email'))));
-        $password        = htmlspecialchars(strip_tags(xss($this->input->post('password'))));
-
-        if($this->form_validation->run() == FALSE){
-
-            $errors = $this->form_validation->error_array();
-            $this->session->set_flashdata('errors', $errors);
-            $this->session->set_flashdata('inputs', $this->input->post());
-			redirect(base_url('admin/akun'));
-
-        } else {
-
-            $data = [
-                'username'      => $username,
-                'fullname'      => $fullname,
-                'email'         => $email,
-                'password'      => password_hash($password, PASSWORD_DEFAULT),
-                'pass_show'     => $password
-            ];
-
-            $ubah   = $this->auth->update($data, $id);
-
-            if($ubah == true){
-                $this->session->set_flashdata('info', 'Berhasil Mengubah Akun');
-                redirect(base_url('admin/akun'));
-            } else {
-                $this->session->set_flashdata('error', 'Gagal Mengubah Akun');
-                redirect(base_url('admin/akun'));
-            }
-
-        }
-    }
 }

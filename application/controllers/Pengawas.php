@@ -83,10 +83,10 @@ class Pengawas extends CI_Controller {
         $pdf->Cell(10, 8, $no, 1, 0, 'C');
         $pdf->Cell(55, 8, $item['pekerjaan_nama'], 1, 0, '');
         $pdf->Cell(55, 8, $item['pekerjaan_kontraktor'], 1, 0, '');
-        $pdf->Cell(55, 8, $item['pekerjaan_jumlah_pekerja'], 1, 0, '');
+        $pdf->Cell(35, 8, $item['pekerjaan_jumlah_pekerja'], 1, 0, '');
         $pdf->Cell(35, 8, date('d-m-Y', strtotime($item['pekerjaan_tgl_mulai'])), 1, 0, 'C');
         $pdf->Cell(35, 8, date('d-m-Y', strtotime($item['pekerjaan_deadline'])), 1, 0, 'C');
-        $pdf->Cell(35, 8, $item['pekerjaan_progress'], 1, 0, 'C');
+        $pdf->Cell(50, 8, $item['pekerjaan_progress'], 1, 0, 'C');
     }
 
     public function print_pekerjaan_with_excel($id = null)
@@ -142,7 +142,7 @@ class Pengawas extends CI_Controller {
         $writer = new Xlsx($spreadsheet);
     
         header('Content-Type: application/vnd.ms-excel');
-        header('Content-Disposition: attachment;filename="Laporan_Pekerjaan_"'.$tanggal.'".xlsx"');
+        header('Content-Disposition: attachment;filename="Laporan_Pekerjaan_"'.str_replace(" ", "_", $pekerjaan['pekerjaan_nama'])."_". $tanggal.'".xlsx"');
         header('Cache-Control: max-age=0');
     
         $writer->save('php://output');
@@ -153,7 +153,8 @@ class Pengawas extends CI_Controller {
 
         $data = [
             'judul' 	=> 'Tambah Pekerjaan',
-            'content'	=> 'pengawas/pekerjaan/create'
+            'content'	=> 'pengawas/pekerjaan/create',
+            'plugin_datepicker' => true
         ];
         
         $this->load->view('pengawas/template', $data);
@@ -162,45 +163,50 @@ class Pengawas extends CI_Controller {
 
     public function store_pekerjaan()
     {
-        $this->form_validation->set_rules('nama', 'Nama Pekerjaan', 'required|alpha_numeric_spaces|min_length[5]|max_length[50]');
-        $this->form_validation->set_rules('kontraktor', 'Nama Kontraktor', 'required|alpha_numeric_spaces|min_length[5]|max_length[100]');
-        $this->form_validation->set_rules('jumlah_pekerja', 'Jumlah Pekerja', 'required|integer');
-        $this->form_validation->set_rules('tanggal_mulai', 'Tanggal Mulai', 'required');
-        $this->form_validation->set_rules('tanggal_deadline', 'Tanggal Deadline', 'required');
-        $this->form_validation->set_rules('progress', 'Progress', 'required|min_length[5]|max_length[50]');
-        $this->form_validation->set_rules('status', 'Status', 'required|max_length[50]');
-        $this->form_validation->set_rules('keterangan', 'Keterangan', 'required|min_length[5]|max_length[50]');
+        $this->form_validation->set_rules('pekerjaan_nama', 'Nama Pekerjaan', 'required|alpha_numeric_spaces|min_length[5]|max_length[50]');
+        $this->form_validation->set_rules('pekerjaan_kontraktor', 'Nama Kontraktor', 'required|alpha_numeric_spaces|min_length[5]|max_length[100]');
+        $this->form_validation->set_rules('pekerjaan_jumlah_pekerja', 'Jumlah Pekerja', 'required|integer');
+        $this->form_validation->set_rules('pekerjaan_tgl_mulai', 'Tanggal Mulai', 'required');
+        $this->form_validation->set_rules('pekerjaan_deadline', 'Tanggal Deadline', 'required');
+        $this->form_validation->set_rules('pekerjaan_progress', 'Progress', 'required|min_length[1]|max_length[50]');
+        $this->form_validation->set_rules('pekerjaan_keterangan', 'Keterangan', 'required|min_length[5]|max_length[50]');
 
-        $username        = htmlspecialchars(strip_tags(xss($this->input->post('username'))));
-        $fullname        = htmlspecialchars(strip_tags(xss($this->input->post('fullname'))));
-        $email           = htmlspecialchars(strip_tags(xssForMail($this->input->post('email'))));
-        $password        = htmlspecialchars(strip_tags(xss($this->input->post('password'))));
+        $nama           = htmlspecialchars(strip_tags(xss($this->input->post('pekerjaan_nama'))));
+        $kontraktor     = htmlspecialchars(strip_tags(xss($this->input->post('pekerjaan_kontraktor'))));
+        $jumlah         = htmlspecialchars(strip_tags(xss($this->input->post('pekerjaan_jumlah_pekerja'))));
+        $mulai          = htmlspecialchars(strip_tags(xss($this->input->post('pekerjaan_tgl_mulai'))));
+        $deadline       = htmlspecialchars(strip_tags(xss($this->input->post('pekerjaan_deadline'))));
+        $progress       = htmlspecialchars(strip_tags(xss($this->input->post('pekerjaan_progress'))));
+        $keterangan     = htmlspecialchars(strip_tags(xss($this->input->post('pekerjaan_keterangan'))));
 
         if($this->form_validation->run() == FALSE){
 
             $errors = $this->form_validation->error_array();
             $this->session->set_flashdata('errors', $errors);
             $this->session->set_flashdata('inputs', $this->input->post());
-			redirect(base_url('pengawas/akun'));
+			redirect(base_url('pengawas/tambah-pekerjaan'));
 
         } else {
 
             $data = [
-                'username'      => $username,
-                'fullname'      => $fullname,
-                'email'         => $email,
-                'password'      => password_hash($password, PASSWORD_DEFAULT),
-                'pass_show'     => $password
+                'pekerjaan_nama'            => $nama,
+                'pekerjaan_kontraktor'      => $kontraktor,
+                'pekerjaan_jumlah_pekerja'  => $jumlah,
+                'pekerjaan_tgl_mulai'       => date('Y-m-d H:i:s', strtotime($mulai)),
+                'pekerjaan_deadline'        => date('Y-m-d H:i:s', strtotime($deadline)),
+                'pekerjaan_progress'        => $progress,
+                'pekerjaan_keterangan'      => $keterangan,
+                'pekerjaan_status'          => 'Pekerjaan Baru'
             ];
 
-            $ubah   = $this->auth->update($data, $id);
+            $simpan   = $this->pekerjaan->insert($data);
 
-            if($ubah == true){
-                $this->session->set_flashdata('info', 'Berhasil Mengubah Akun');
-                redirect(base_url('pengawas/akun'));
+            if($simpan == true){
+                $this->session->set_flashdata('success', 'Berhasil Menambah Pekerjaan Baru');
+                redirect(base_url('pengawas/pekerjaan'));
             } else {
-                $this->session->set_flashdata('error', 'Gagal Mengubah Akun');
-                redirect(base_url('pengawas/akun'));
+                $this->session->set_flashdata('error', 'Gagal Menambah Pekerjaan Baru');
+                redirect(base_url('pengawas/pekerjaan'));
             }
 
         }

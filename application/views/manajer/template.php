@@ -28,7 +28,7 @@
 <body class="hold-transition sidebar-mini">
     <div class="wrapper">
         <?php $this->load->view('partials/navbar'); ?>
-        <?php $this->load->view('admin/sidebar'); ?>
+        <?php $this->load->view('manajer/sidebar'); ?>
         <?php $this->load->view($content); ?>
         <aside class="control-sidebar control-sidebar-dark">
             <div class="p-3">

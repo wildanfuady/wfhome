@@ -3,11 +3,12 @@
     <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0 text-dark">Dashboard</h1>
+            <h1 class="m-0 text-dark">Data Pekerjaan</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="<?= base_url('admin/dashboard') ?>">Dashboard</a></li>
+              <li class="breadcrumb-item"><a href="<?= base_url('dashboard') ?>">Dashboard</a></li>
+              <li class="breadcrumb-item"><a href="<?= base_url('pengawas/pekerjaan') ?>">Pekerjaan</a></li>
               <li class="breadcrumb-item active">Here</li>
             </ol>
           </div>
@@ -18,73 +19,13 @@
   <section class="content">
     <div class="container-fluid">
       <div class="row">
-        <div class="col-12 col-sm-6 col-md-3">
-          <div class="info-box">
-            <span class="info-box-icon bg-info elevation-1"><i class="fas fa-th"></i></span>
-            <div class="info-box-content">
-              <span class="info-box-text">Total Pekerjaan</span>
-              <span class="info-box-number">
-                <?= $pekerjaan_total ?>
-              </span>
-            </div>
-          </div>
-        </div>
-        <!-- /.col -->
-        <div class="col-12 col-sm-6 col-md-3">
-          <div class="info-box mb-3">
-            <span class="info-box-icon bg-success elevation-1"><i class="fa fa-check-circle"></i></span>
-            <div class="info-box-content">
-              <span class="info-box-text">Pekerjaan Selesai</span>
-              <span class="info-box-number">
-                <?= $pekerjaan_selesai ?>
-              </span>
-            </div>
-          </div>
-        </div>
-
-        <div class="clearfix hidden-md-up"></div>
-
-        <div class="col-12 col-sm-6 col-md-3">
-          <div class="info-box mb-3">
-            <span class="info-box-icon bg-warning elevation-1"><i class="fas fa-chart-line"></i></span>
-            <div class="info-box-content">
-              <span class="info-box-text">Pekerjaan On Progress</span>
-              <span class="info-box-number">
-                <?= $pekerjaan_progress ?>
-              </span>
-            </div>
-          </div>
-        </div>
-        <div class="col-12 col-sm-6 col-md-3">
-          <div class="info-box mb-3">
-            <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-times-circle"></i></span>
-
-            <div class="info-box-content">
-              <span class="info-box-text">Pekerjaan Reject</span>
-              <span class="info-box-number">
-                <?= $pekerjaan_reject ?>
-              </span>
-            </div>
-            <!-- /.info-box-content -->
-          </div>
-          <!-- /.info-box -->
-        </div>
-        <!-- /.col -->
-      </div>
-      <!-- /.row -->
-    </div>
-  </section>
-
-  <section class="content mt-5">
-    <div class="container-fluid">
-      <div class="row">
         <div class="col-12">
           <div class="card">
             <div class="card-header">
-              <strong>Data Pekerjaan Terbaru</strong>
+              Data Pekerjaan
               <div class="btn-group float-right">
-                <a href="<?= base_url('admin/print-pekerjaan-with-pdf') ?>" class="btn btn-sm btn-danger float-right"><i class="fa fa-print"></i> Print Pekerjaan (PDF)</a>
-                <a href="<?= base_url('admin/print-pekerjaan-with-excel') ?>" class="btn btn-sm btn-success float-right"><i class="fa fa-print"></i> Print Pekerjaan (Excel)</a>
+                <a href="<?= base_url('pengawas/print-pekerjaan-with-pdf') ?>" class="btn btn-sm btn-danger float-right"><i class="fa fa-print"></i> Print Pekerjaan (PDF)</a>
+                <a href="<?= base_url('pengawas/print-pekerjaan-with-excel') ?>" class="btn btn-sm btn-success float-right"><i class="fa fa-print"></i> Print Pekerjaan (Excel)</a>
               </div>
             </div>
             <div class="card-body">
@@ -144,10 +85,10 @@
                               ?>
                             </td>
                             <td>
-                              <div class="btn-group">
-                                <a href="<?= base_url('manajer/status-pekerjaan/'.$item['pekerjaan_id']) ?>" class="btn btn-sm btn-primary" title="Ubah Status Pekerjaan"><i class="fa fa-edit"></i></a>
-                                <a href="<?= base_url('manajer/hapus-pekerjaan/'.$item['pekerjaan_id']) ?>" class="btn btn-sm btn-danger" title="Hapus Pekerjaan"><i class="fa fa-trash-alt"></i></a>
-                              </div>
+                                <div class="btn-group">
+                                    <a href="<?= base_url('manajer/status-pekerjaan/'.$item['pekerjaan_id']) ?>" class="btn btn-sm btn-primary" title="Ubah Status Pekerjaan"><i class="fa fa-edit"></i></a>
+                                    <a href="<?= base_url('manajer/hapus-pekerjaan/'.$item['pekerjaan_id']) ?>" class="btn btn-sm btn-danger" title="Hapus Pekerjaan"><i class="fa fa-trash-alt"></i></a>
+                                </div>
                             </td>
                         </tr>
                         <?php } ?>

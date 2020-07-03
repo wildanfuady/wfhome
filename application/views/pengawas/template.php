@@ -19,6 +19,12 @@
     <!-- summernote -->
     <link rel="stylesheet" href="<?= base_url('assets/template/') ?>plugins/summernote/summernote-bs4.css">
     <?php } ?>
+    <?php if(isset($plugin_datepicker) == true){ ?>
+    <!-- daterange picker -->
+    <link rel="stylesheet" href="<?= base_url('assets/template/') ?>plugins/daterangepicker/daterangepicker.css">
+    <!-- Tempusdominus Bbootstrap 4 -->
+    <link rel="stylesheet" href="<?= base_url('assets/template/') ?>plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
+    <?php } ?>
     <style>
     .about_developer span{
       font-size: 14px;
@@ -50,6 +56,25 @@
 <script src="<?= base_url('assets/template/') ?>plugins/jquery/jquery.min.js"></script>
 <!-- Bootstrap 4 -->
 <script src="<?= base_url('assets/template/') ?>plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<?php if(isset($plugin_datepicker) == true){ ?>
+<!-- InputMask -->
+<script src="<?= base_url('assets/template/') ?>plugins/moment/moment.min.js"></script>
+<!-- date-range-picker -->
+<script src="<?= base_url('assets/template/') ?>plugins/daterangepicker/daterangepicker.js"></script>
+<!-- Tempusdominus Bootstrap 4 -->
+<script src="<?= base_url('assets/template/') ?>plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
+<script>
+$(document).ready(function(){
+    //Date range picker
+    $('#datepicker1').datetimepicker({
+      format: 'DD/MM/YYYY'
+    });
+    $('#datepicker2').datetimepicker({
+      format: 'DD/MM/YYYY'
+    });
+});
+</script>
+<?php } ?>
 <!-- AdminLTE App -->
 <script src="<?= base_url('assets/template/') ?>dist/js/adminlte.min.js"></script>
 <?php if(isset($plugin_datatable) == true){ ?>
