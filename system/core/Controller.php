@@ -102,8 +102,21 @@ class CI_Controller {
 
 	public function cek_login_admin()
 	{
-		if($this->session->userdata('id') == null && $this->session->userdata('level') != "admin" && $this->session->userdata('status') != "activated"){
-            // redirect 404
+		if($this->session->userdata('level') != "admin" || $this->session->userdata('status') != "activated"){
+            redirect(base_url('/'));
+        }
+	}
+
+	public function cek_login_pengawas()
+	{
+		if($this->session->userdata('level') != "pengawas" || $this->session->userdata('status') != "activated"){
+            redirect(base_url('/'));
+        }
+	}
+
+	public function cek_login_manajer()
+	{
+		if($this->session->userdata('level') != "manajer" || $this->session->userdata('status') != "activated"){
             redirect(base_url('/'));
         }
 	}

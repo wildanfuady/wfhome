@@ -18,8 +18,14 @@ class Auth extends CI_Controller {
 			// tampilkan halaman login di dalam template
 			$this->load->view('v_login');
 			
-        } else { // jika sudah login langsung diredirect ke halaman mulai service order
-            redirect(base_url('dashboard'));
+		} else { // jika sudah login langsung diredirect ke halaman mulai service order
+			if($this->session->userdata('level') == "admin" && $this->session->userdata('status') == "activated"){
+				redirect(base_url('admin/dashboard'));
+			} else if($this->session->userdata('level') == "pengawas" && $this->session->userdata('status') == "activated"){
+				redirect(base_url('pengawas/dashboard'));
+			} else {
+				//
+			}
         }
 	}
 	
@@ -69,12 +75,12 @@ class Auth extends CI_Controller {
 					
 					} else if($cek_login['status'] == "activated" && $cek_login['level'] == "pengawas"){
 
-						redirect(base_url('admin/pengawas')); 
+						redirect(base_url('pengawas/dashboard')); 
 
 					} else if($cek_login['status'] == "activated" && $cek_login['level'] == "manajer"){
 
-						redirect(base_url('admin/manajer')); 
-						
+						redirect(base_url('manajer/dashboard')); 
+
 					} else {
 
 						$errors = ['errors' => 'Email atau password yang Anda masukan salah'];
