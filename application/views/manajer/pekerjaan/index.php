@@ -57,7 +57,7 @@
                             <th>Jumlah Pekerja</th>
                             <th>Tanggal Mulai</th>
                             <th>Deadline</th>
-                            <th>Progress</th>
+                            <th>Keterangan</th>
                             <th>Status</th>
                             <th>Action</th>
                         </tr>
@@ -84,7 +84,7 @@
                             <td><?= $item['pekerjaan_jumlah_pekerja'] ?></td>
                             <td><?= date('d-m-Y', strtotime($item['pekerjaan_tgl_mulai'])) ?></td>
                             <td><?= date('d-m-Y', strtotime($item['pekerjaan_deadline'])) ?></td>
-                            <td><?= $item['pekerjaan_progress'] ?></td>
+                            <td><?= $item['pekerjaan_keterangan'] ?></td>
                             <td>
                               <?php 
                               if($item['pekerjaan_status'] == "Progress"){

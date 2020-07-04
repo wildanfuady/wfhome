@@ -59,7 +59,7 @@
                             <th>Tanggal Mulai</th>
                             <th>Deadline</th>
                             <th>Memo</th>
-                            <th>Progress</th>
+                            <th>Keterangan</th>
                             <th>Action</th>
                         </tr>
                         </thead>
@@ -100,7 +100,7 @@
                               }
                               ?>
                             </td>
-                            <td><?= $item['pekerjaan_progress'] ?></td>
+                            <td><?= $item['pekerjaan_keterangan'] ?></td>
                             <td>
                                 <div class="btn-group">
                                     <a href="<?= base_url('pengawas/edit-pekerjaan/'.$item['pekerjaan_id']) ?>" class="btn btn-sm btn-primary" title="Edit Progress"><i class="fa fa-edit"></i></a>

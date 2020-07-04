@@ -83,8 +83,8 @@
             <div class="card-header">
               <strong>Data Pekerjaan Terbaru</strong>
               <div class="btn-group float-right">
-                <a href="<?= base_url('admin/print-pekerjaan-with-pdf') ?>" class="btn btn-sm btn-danger float-right"><i class="fa fa-print"></i> Print Pekerjaan (PDF)</a>
-                <a href="<?= base_url('admin/print-pekerjaan-with-excel') ?>" class="btn btn-sm btn-success float-right"><i class="fa fa-print"></i> Print Pekerjaan (Excel)</a>
+                <a href="<?= base_url('pengawas/print-pekerjaan-with-pdf') ?>" class="btn btn-sm btn-danger float-right"><i class="fa fa-print"></i> Print Pekerjaan (PDF)</a>
+                <a href="<?= base_url('pengawas/print-pekerjaan-with-excel') ?>" class="btn btn-sm btn-success float-right"><i class="fa fa-print"></i> Print Pekerjaan (Excel)</a>
               </div>
             </div>
             <div class="card-body">
@@ -115,7 +115,7 @@
                             <th>Jumlah Pekerja</th>
                             <th>Tanggal Mulai</th>
                             <th>Deadline</th>
-                            <th>Progress</th>
+                            <th>Keterangan</th>
                             <th>Action</th>
                         </tr>
                         </thead>
@@ -138,11 +138,11 @@
                             <td><?= $item['pekerjaan_jumlah_pekerja'] ?></td>
                             <td><?= date('d-m-Y', strtotime($item['pekerjaan_tgl_mulai'])) ?></td>
                             <td><?= date('d-m-Y', strtotime($item['pekerjaan_deadline'])) ?></td>
-                            <td><?= $item['pekerjaan_progress'] ?></td>
+                            <td><?= $item['pekerjaan_keterangan'] ?></td>
                             <td>
                                 <div class="btn-group">
-                                    <a href="<?= base_url('admin/print-pekerjaan-with-pdf/'.$item['pekerjaan_id']) ?>" class="btn btn-sm btn-danger" title="Export To PDF"><i class="fa fa-print"></i></a>
-                                    <a href="<?= base_url('admin/print-pekerjaan-with-excel/'.$item['pekerjaan_id']) ?>" class="btn btn-sm btn-success" title="Export To Excel"><i class="fa fa-print"></i></a>
+                                    <a href="<?= base_url('pengawas/print-pekerjaan-with-pdf/'.$item['pekerjaan_id']) ?>" class="btn btn-sm btn-danger" title="Export To PDF"><i class="fa fa-print"></i></a>
+                                    <a href="<?= base_url('pengawas/print-pekerjaan-with-excel/'.$item['pekerjaan_id']) ?>" class="btn btn-sm btn-success" title="Export To Excel"><i class="fa fa-print"></i></a>
                                 </div>
                             </td>
                         </tr>
