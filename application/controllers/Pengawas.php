@@ -129,13 +129,13 @@ class Pengawas extends CI_Controller {
                     $tipe = "Subsidi (Type 25) Rumah";
                 } else {
                     $tipe = "Sarana dan Prasarana";
-                    $keterangan = " /m<sup>2</sup>";
+                    $keterangan = " /m2";
                 }
                 $spreadsheet->setActiveSheetIndex(0)
                             ->setCellValue('A' . $kolom, $nomor)
                             ->setCellValue('B' . $kolom, $tipe)
                             ->setCellValue('C' . $kolom, $data['pekerjaan_unit']." ".$keterangan)
-                            ->setCellValue('D' . $kolom, $data['pekerjaan_kontaktor'])
+                            ->setCellValue('D' . $kolom, $data['pekerjaan_kontraktor'])
                             ->setCellValue('E' . $kolom, $data['pekerjaan_jumlah_pekerja'])
                             ->setCellValue('F' . $kolom, date('j F Y', strtotime($data['pekerjaan_tgl_mulai'])))
                             ->setCellValue('G' . $kolom, date('j F Y', strtotime($data['pekerjaan_deadline'])))
@@ -153,13 +153,13 @@ class Pengawas extends CI_Controller {
                     $tipe = "Subsidi (Type 25) Rumah";
                 } else {
                     $tipe = "Sarana dan Prasarana";
-                    $keterangan = " /m<sup>2</sup>";
+                    $keterangan = " /m2";
                 }
                 $spreadsheet->setActiveSheetIndex(0)
                             ->setCellValue('A' . $kolom, $nomor)
                             ->setCellValue('B' . $kolom, $tipe)
                             ->setCellValue('C' . $kolom, $data['pekerjaan_unit']." ".$keterangan)
-                            ->setCellValue('D' . $kolom, $data['pekerjaan_kontaktor'])
+                            ->setCellValue('D' . $kolom, $data['pekerjaan_kontraktor'])
                             ->setCellValue('E' . $kolom, $data['pekerjaan_jumlah_pekerja'])
                             ->setCellValue('F' . $kolom, date('j F Y', strtotime($data['pekerjaan_tgl_mulai'])))
                             ->setCellValue('G' . $kolom, date('j F Y', strtotime($data['pekerjaan_deadline'])))
