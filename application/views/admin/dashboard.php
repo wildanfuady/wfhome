@@ -106,39 +106,46 @@
                 </div>
                 <?php } else {} ?>
                 <div class="table-responsive">
-                    <table id="table" class="table table-sm table-bordered table-hover">
-                        <thead>
+                  <table id="table" class="table table-sm table-bordered table-hover">
+                    <thead>
                         <tr>
                             <th>No</th>
                             <th>Nama Pekerjaan</th>
+                            <th>Jumlah</th>
                             <th>Nama Kontraktor</th>
                             <th>Jumlah Pekerja</th>
                             <th>Tanggal Mulai</th>
                             <th>Deadline</th>
-                            <th>Progress</th>
-                            <th>Action</th>
+                            <th>Keterangan</th>
                         </tr>
-                        </thead>
-                        <tbody>
+                    </thead>
+                    <tbody>
                         <?php foreach($pekerjaan as $key => $item) { ?>
                         <tr>
                             <td><?= $key + 1 ?></td>
-                            <td><?= $item['pekerjaan_nama'] ?></td>
+                            <td>
+                              <?php 
+                                if($item['pekerjaan_nama'] == 1){
+                                  echo "Kormersil (Type 32) Rumah";
+                                  $keterangan = " unit";
+                                } else if($item['pekerjaan_nama'] == 2){
+                                  echo "Subsidi (Type 25) Rumah";
+                                } else {
+                                  echo "Sarana dan Prasarana";
+                                  $keterangan = " /m<sup>2</sup>";
+                                }
+                              ?>
+                            </td>
+                            <td><?= $item['pekerjaan_unit'].$keterangan ?></td>
                             <td><?= $item['pekerjaan_kontraktor'] ?></td>
                             <td><?= $item['pekerjaan_jumlah_pekerja'] ?></td>
                             <td><?= date('d-m-Y', strtotime($item['pekerjaan_tgl_mulai'])) ?></td>
                             <td><?= date('d-m-Y', strtotime($item['pekerjaan_deadline'])) ?></td>
-                            <td><?= $item['pekerjaan_progress'] ?></td>
-                            <td>
-                                <div class="btn-group">
-                                    <a href="<?= base_url('admin/print-pekerjaan-with-pdf/'.$item['pekerjaan_id']) ?>" class="btn btn-sm btn-danger" title="Export To PDF"><i class="fa fa-print"></i></a>
-                                    <a href="<?= base_url('admin/print-pekerjaan-with-excel/'.$item['pekerjaan_id']) ?>" class="btn btn-sm btn-success" title="Export To Excel"><i class="fa fa-print"></i></a>
-                                </div>
-                            </td>
+                            <td><?= $item['pekerjaan_keterangan'] ?></td>
                         </tr>
                         <?php } ?>
-                        </tbody>
-                    </table>
+                      </tbody>
+                  </table>
                 </div>
             </div>
           </div>

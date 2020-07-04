@@ -14,6 +14,16 @@ class Pekerjaan_model extends CI_Model
             return $this->db->get($this->table)->result_array();
         }
     }
+
+    public function getPekerjaanForAdmin($id = null)
+    {
+        if($id != null){
+            return $this->db->get_where($this->table, [$this->primaryKey => $id, 'pekerjaan_status' => 'Selesai'])->row_array();
+        } else {
+            return $this->db->get_where($this->table, ['pekerjaan_status' => 'Selesai'])->result_array();
+        }
+    }
+
     public function getCountPekerjaan($status = null)
     {
         if($status != null){

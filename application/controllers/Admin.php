@@ -24,11 +24,12 @@ class Admin extends CI_Controller {
         $data = [
             'judul' 	=> 'Home',
             'content'	=> 'admin/dashboard',
-            'pekerjaan' => $this->pekerjaan->getPekerjaan(),
+            'pekerjaan' => $this->pekerjaan->getPekerjaanForAdmin(),
             'pekerjaan_total'       => $this->pekerjaan->getCountPekerjaan(),
             'pekerjaan_selesai'     => $this->pekerjaan->getCountPekerjaan('Selesai'),
             'pekerjaan_progress'    => $this->pekerjaan->getCountPekerjaan('Progress'),
-            'pekerjaan_reject'      => $this->pekerjaan->getCountPekerjaan('Reject')
+            'pekerjaan_reject'      => $this->pekerjaan->getCountPekerjaan('Reject'),
+            'plugin_datatable'      => true
         ];
         
         $this->load->view('admin/template', $data);
@@ -349,7 +350,7 @@ class Admin extends CI_Controller {
         $data = [
             'judul' 	=> 'Data Pekerjaan',
             'content'	=> 'admin/pekerjaan',
-            'pekerjaan' => $this->pekerjaan->getPekerjaan(),
+            'pekerjaan' => $this->pekerjaan->getPekerjaanForAdmin(),
             'plugin_datatable' => true
         ];
         
@@ -361,7 +362,7 @@ class Admin extends CI_Controller {
         $tanggal = date('d-m-Y');
  
         $pdf = new \TCPDF();
-        $pdf->AddPage('L', 'A4');
+        $pdf->AddPage('L', 'A3');
         $pdf->SetFont('', 'B', 20);
         $pdf->Cell(113, 0, "Laporan Pekerjaan - ".$tanggal, 0, 1, 'L');
         $pdf->SetAutoPageBreak(true, 0);
@@ -371,32 +372,45 @@ class Admin extends CI_Controller {
         $pdf->SetFont('', 'B', 12);
         $pdf->Cell(10, 8, "No", 1, 0, 'C');
         $pdf->Cell(55, 8, "Nama Pekerjaan", 1, 0, 'C');
+        $pdf->Cell(35, 8, "Jumlah Unit", 1, 0, 'C');
         $pdf->Cell(55, 8, "Nama Kontraktor", 1, 0, 'C');
         $pdf->Cell(35, 8, "Jumlah Pekerja", 1, 0, 'C');
         $pdf->Cell(35, 8, "Tanggal Mulai", 1, 0, 'C');
         $pdf->Cell(35, 8, "Deadline", 1, 0, 'C');
-        $pdf->Cell(50, 8, "Progress", 1, 1, 'C');
+        $pdf->Cell(135, 8, "Keterangan", 1, 1, 'C');
         $pdf->SetFont('', '', 12);
         if($id == null){
-            $pekerjaan = $this->pekerjaan->getPekerjaan();
+            $pekerjaan = $this->pekerjaan->getPekerjaanForAdmin();
             foreach($pekerjaan as $k => $item) {
                 $this->addRow($pdf, $k+1, $item);
             }
         } else {
-            $item = $this->pekerjaan->getPekerjaan($id);
+            $item = $this->pekerjaan->getPekerjaanForAdmin($id);
             $this->addRow($pdf, 1, $item);
         }
         $pdf->Output('Laporan Pekerjaan - '.$tanggal.'.pdf'); 
     }
  
     private function addRow($pdf, $no, $item) {
+
+        if($item['pekerjaan_nama'] == 1){
+            $tipe = "Kormersil (Type 32) Rumah";
+            $keterangan = " unit";
+        } else if($item['pekerjaan_nama'] == 2){
+            $tipe = "Subsidi (Type 25) Rumah";
+        } else {
+            $tipe = "Sarana dan Prasarana";
+            $keterangan = " /m<sup>2</sup>";
+        }
+
         $pdf->Cell(10, 8, $no, 1, 0, 'C');
-        $pdf->Cell(55, 8, $item['pekerjaan_nama'], 1, 0, '');
+        $pdf->Cell(55, 8, $tipe, 1, 0, '');
+        $pdf->Cell(35, 8, $item['pekerjaan_unit']." ".$keterangan, 1, 0, '');
         $pdf->Cell(55, 8, $item['pekerjaan_kontraktor'], 1, 0, '');
-        $pdf->Cell(55, 8, $item['pekerjaan_jumlah_pekerja'], 1, 0, '');
+        $pdf->Cell(35, 8, $item['pekerjaan_jumlah_pekerja']." karyawan", 1, 0, '');
         $pdf->Cell(35, 8, date('d-m-Y', strtotime($item['pekerjaan_tgl_mulai'])), 1, 0, 'C');
         $pdf->Cell(35, 8, date('d-m-Y', strtotime($item['pekerjaan_deadline'])), 1, 0, 'C');
-        $pdf->Cell(35, 8, $item['pekerjaan_progress'], 1, 0, 'C');
+        $pdf->Cell(135, 8, $item['pekerjaan_keterangan'], 1, 0, 'C');
     }
 
     public function print_pekerjaan_with_excel($id = null)
@@ -408,41 +422,61 @@ class Admin extends CI_Controller {
         $spreadsheet->setActiveSheetIndex(0)
                     ->setCellValue('A1', 'No')
                     ->setCellValue('B1', 'Nama Pekerjaan')
+                    ->setCellValue('B1', 'Jumlah Uit')
                     ->setCellValue('C1', 'Nama Kontraktor')
                     ->setCellValue('D1', 'Jumlah Pekerja')
                     ->setCellValue('E1', 'Tanggal Mulai')
                     ->setCellValue('F1', 'Deadline')
-                    ->setCellValue('G1', 'Progress');
+                    ->setCellValue('G1', 'Keterangan');
         // define kolom dan nomor
         $kolom = 2;
         $nomor = 1;
         // tambahkan data pekerjaan ke dalam file excel
         if($id == null){
-            $pekerjaan = $this->pekerjaan->getPekerjaan();
+            $pekerjaan = $this->pekerjaan->getPekerjaanForAdmin();
             foreach($pekerjaan as $data) {
-        
+                if($data['pekerjaan_nama'] == 1){
+                    $tipe = "Kormersil (Type 32) Rumah";
+                    $keterangan = " unit";
+                } else if($data['pekerjaan_nama'] == 2){
+                    $tipe = "Subsidi (Type 25) Rumah";
+                } else {
+                    $tipe = "Sarana dan Prasarana";
+                    $keterangan = " /m<sup>2</sup>";
+                }
                 $spreadsheet->setActiveSheetIndex(0)
                             ->setCellValue('A' . $kolom, $nomor)
-                            ->setCellValue('B' . $kolom, $data['pekerjaan_nama'])
+                            ->setCellValue('B' . $kolom, $tipe)
+                            ->setCellValue('C' . $kolom, $data['pekerjaan_unit']." ".$keterangan)
                             ->setCellValue('C' . $kolom, $data['pekerjaan_kontaktor'])
                             ->setCellValue('D' . $kolom, $data['pekerjaan_jumlah_pekerja'])
                             ->setCellValue('E' . $kolom, date('j F Y', strtotime($data['pekerjaan_tgl_mulai'])))
                             ->setCellValue('F' . $kolom, date('j F Y', strtotime($data['pekerjaan_deadline'])))
-                            ->setCellValue('G' . $kolom, $data['pekerjaan_progress']);
+                            ->setCellValue('G' . $kolom, $data['pekerjaan_keterangan']);
                 $kolom++;
                 $nomor++;
             }
         } else {
-            $pekerjaan = $this->pekerjaan->getPekerjaan($id);
+            $pekerjaan = $this->pekerjaan->getPekerjaanForAdmin($id);
             if(!empty($pekerjaan)){
+                if($pekerjaan['pekerjaan_nama'] == 1){
+                    $tipe = "Kormersil (Type 32) Rumah";
+                    $keterangan = " unit";
+                } else if($pekerjaan['pekerjaan_nama'] == 2){
+                    $tipe = "Subsidi (Type 25) Rumah";
+                } else {
+                    $tipe = "Sarana dan Prasarana";
+                    $keterangan = " /m<sup>2</sup>";
+                }
                 $spreadsheet->setActiveSheetIndex(0)
                                 ->setCellValue('A' . $kolom, $nomor)
-                                ->setCellValue('B' . $kolom, $pekerjaan['pekerjaan_nama'])
-                                ->setCellValue('C' . $kolom, $pekerjaan['pekerjaan_kontaktor'])
+                                ->setCellValue('B' . $kolom, $tipe)
+                                ->setCellValue('C' . $kolom, $pekerjaan['pekerjaan_kontaktor']." ".$keterangan)
+                                ->setCellValue('C' . $kolom, $pekerjaan['pekerjaan_unit'])
                                 ->setCellValue('D' . $kolom, $pekerjaan['pekerjaan_jumlah_pekerja'])
                                 ->setCellValue('E' . $kolom, date('j F Y', strtotime($pekerjaan['pekerjaan_tgl_mulai'])))
                                 ->setCellValue('F' . $kolom, date('j F Y', strtotime($pekerjaan['pekerjaan_deadline'])))
-                                ->setCellValue('G' . $kolom, $pekerjaan['pekerjaan_progress']);
+                                ->setCellValue('G' . $kolom, $pekerjaan['pekerjaan_keterangan']);
             } else {
                 $this->session->set_flashdata('error', 'Gagal Membuat Laporan Pekerjaan');
                 redirect(base_url('admin/pekerjaan'));
