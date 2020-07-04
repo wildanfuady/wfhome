@@ -123,7 +123,17 @@
                         <?php foreach($pekerjaan as $key => $item) { ?>
                         <tr>
                             <td><?= $key + 1 ?></td>
-                            <td><?= $item['pekerjaan_nama'] ?></td>
+                            <td>
+                            <?php 
+                                if($item['pekerjaan_nama'] == 1){
+                                  echo "Kormersil (Type 32) Rumah";
+                                } else if($item['pekerjaan_nama'] == 2){
+                                  echo "Subsidi (Type 25) Rumah";
+                                } else {
+                                  echo "Sarana dan Prasarana";
+                                }
+                              ?>
+                            </td>
                             <td><?= $item['pekerjaan_kontraktor'] ?></td>
                             <td><?= $item['pekerjaan_jumlah_pekerja'] ?></td>
                             <td><?= date('d-m-Y', strtotime($item['pekerjaan_tgl_mulai'])) ?></td>

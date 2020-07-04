@@ -117,14 +117,23 @@
                             <th>Deadline</th>
                             <th>Progress</th>
                             <th>Status</th>
-                            <th>Action</th>
                         </tr>
                         </thead>
                         <tbody>
                         <?php foreach($pekerjaan as $key => $item) { ?>
                         <tr>
                             <td><?= $key + 1 ?></td>
-                            <td><?= $item['pekerjaan_nama'] ?></td>
+                            <td>
+                              <?php 
+                                if($item['pekerjaan_nama'] == 1){
+                                  echo "Kormersil (Type 32) Rumah";
+                                } else if($item['pekerjaan_nama'] == 2){
+                                  echo "Subsidi (Type 25) Rumah";
+                                } else {
+                                  echo "Sarana dan Prasarana";
+                                }
+                              ?>
+                            </td>
                             <td><?= $item['pekerjaan_kontraktor'] ?></td>
                             <td><?= $item['pekerjaan_jumlah_pekerja'] ?></td>
                             <td><?= date('d-m-Y', strtotime($item['pekerjaan_tgl_mulai'])) ?></td>
@@ -142,12 +151,6 @@
                                 echo "<div class='btn btn-danger btn-sm'>$item[pekerjaan_status]</div>";
                               }
                               ?>
-                            </td>
-                            <td>
-                              <div class="btn-group">
-                                <a href="<?= base_url('manajer/status-pekerjaan/'.$item['pekerjaan_id']) ?>" class="btn btn-sm btn-primary" title="Ubah Status Pekerjaan"><i class="fa fa-edit"></i></a>
-                                <a href="<?= base_url('manajer/hapus-pekerjaan/'.$item['pekerjaan_id']) ?>" class="btn btn-sm btn-danger" title="Hapus Pekerjaan"><i class="fa fa-trash-alt"></i></a>
-                              </div>
                             </td>
                         </tr>
                         <?php } ?>

@@ -96,13 +96,56 @@ class Manajer extends CI_Controller {
     public function pekerjaan()
     {
         $data = [
-            'judul' 	=> 'Data Pekerjaan',
-            'content'	=> 'manajer/pekerjaan/index',
-            'pekerjaan' => $this->pekerjaan->getPekerjaan(),
-            'plugin_datatable' => true
+            'judul' 	        => 'Data Pekerjaan',
+            'content'	        => 'manajer/pekerjaan/index',
+            'pekerjaan'         => $this->pekerjaan->getPekerjaan(),
+            'plugin_datatable'  => true,
+            'plugin_edit_with_modal'     => true,
         ];
         
         $this->load->view('manajer/template', $data);
+    }
+
+    public function status_pekerjaan($id = null){
+        $pekerjaan = $this->pekerjaan->getPekerjaan($id);
+
+        if(!empty($pekerjaan)){
+
+            $status = $this->input->post('status_pekerjaan', true);
+
+            $data = [
+                'pekerjaan_status' => $status
+            ];
+
+            $ubah = $this->pekerjaan->update($data, $id);
+
+            if($ubah == true){
+                $this->session->set_flashdata('info', 'Berhasil Mengubah Status Pekerjaan');
+                redirect(base_url('manajer/pekerjaan'));
+            } else {
+                $this->session->set_flashdata('error', 'Gagal Mengubah Status Pekerjaan');
+                redirect(base_url('manajer/pekerjaan'));
+            }
+        }
+    }
+
+    public function hapus_pekerjaan($id = null)
+    {
+        $pekerjaan = $this->pekerjaan->getPekerjaan($id);
+
+        if(!empty($pekerjaan)){
+
+            $hapus = $this->pekerjaan->delete($id);
+
+            if($hapus == true){
+                $this->session->set_flashdata('warning', 'Berhasil Menghapus Akun');
+                redirect(base_url('manajer/pekerjaan'));
+            } else {
+                $this->session->set_flashdata('error', 'Gagal Menghapus Akun');
+                redirect(base_url('manajer/pekerjaan'));
+            }
+        
+        }
     }
 
     public function print_pekerjaan_with_pdf($id = null)
@@ -201,7 +244,7 @@ class Manajer extends CI_Controller {
         $writer = new Xlsx($spreadsheet);
     
         header('Content-Type: application/vnd.ms-excel');
-        header('Content-Disposition: attachment;filename="Laporan_Pekerjaan_"'.str_replace(" ", "_", $pekerjaan['pekerjaan_nama'])."_". $tanggal.'".xlsx"');
+        header('Content-Disposition: attachment;filename="Laporan_Pekerjaan_"'.str_replace(" ", "_". $tanggal).'".xlsx"');
         header('Cache-Control: max-age=0');
     
         $writer->save('php://output');

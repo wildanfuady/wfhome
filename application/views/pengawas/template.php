@@ -184,6 +184,26 @@ $(document).ready(function () {
       return this.href == url;
 
     }).parentsUntil(".nav-sidebar > .nav-treeview").addClass('menu-open') .prev('a').addClass('active'); 
+  
+    $("#tipe_pekerjaan").on('change', function(){
+        console.log("Tipe Diubah");
+        var val_tipe = $("#tipe_pekerjaan").val();
+        if(val_tipe == 3){
+          $("#text_jumlah_by_tipe").html("Jumlah Pekerjaan /m<sup>2</sup>");
+          $("#jumlah_tipe").removeAttr("readonly");
+        } else if(val_tipe == 1 || val_tipe == 2){
+          $("#text_jumlah_by_tipe").text("Jumlah Unit Rumah");
+          $("#jumlah_tipe").removeAttr("readonly");
+        } else {
+          $("#text_jumlah_by_tipe").text("Jumlah");
+        }
+    });
+
+    function showModalEdit(href, status) {
+
+      $("#ubahStatusPekerjaan").modal("show");
+      
+    }
   });
   
 </script>

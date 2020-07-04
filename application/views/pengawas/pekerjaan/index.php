@@ -53,10 +53,12 @@
                         <tr>
                             <th>No</th>
                             <th>Nama Pekerjaan</th>
+                            <th>Jumlah</th>
                             <th>Nama Kontraktor</th>
                             <th>Jumlah Pekerja</th>
                             <th>Tanggal Mulai</th>
                             <th>Deadline</th>
+                            <th>Memo</th>
                             <th>Progress</th>
                             <th>Action</th>
                         </tr>
@@ -65,14 +67,43 @@
                         <?php foreach($pekerjaan as $key => $item) { ?>
                         <tr>
                             <td><?= $key + 1 ?></td>
-                            <td><?= $item['pekerjaan_nama'] ?></td>
+                            <td>
+                              <?php 
+                                if($item['pekerjaan_nama'] == 1){
+                                  echo "Kormersil (Type 32) Rumah";
+                                } else if($item['pekerjaan_nama'] == 2){
+                                  echo "Subsidi (Type 25) Rumah";
+                                } else {
+                                  echo "Sarana dan Prasarana";
+                                }
+                              ?>
+                            </td>
+                            <td>
+                              <?php
+                              if($item['pekerjaan_nama'] == 1 || $item['pekerjaan_nama'] == 2){
+                                echo $item['pekerjaan_unit']." unit";
+                              } else {
+                                echo $item['pekerjaan_unit']." /m<sup>2</sup>";
+                              }
+                              ?>
+                            </td>
                             <td><?= $item['pekerjaan_kontraktor'] ?></td>
                             <td><?= $item['pekerjaan_jumlah_pekerja'] ?></td>
                             <td><?= date('d-m-Y', strtotime($item['pekerjaan_tgl_mulai'])) ?></td>
                             <td><?= date('d-m-Y', strtotime($item['pekerjaan_deadline'])) ?></td>
+                            <td>
+                              <?php
+                              $deadline = new DateTime($item['pekerjaan_deadline']);
+                              $perbedaan = $deadline->diff(new DateTime());
+                              if($perbedaan->d <= 7){
+                                echo "Deadline Pekerjaan Tinggal Seminggu Lagi!";
+                              }
+                              ?>
+                            </td>
                             <td><?= $item['pekerjaan_progress'] ?></td>
                             <td>
                                 <div class="btn-group">
+                                    <a href="<?= base_url('pengawas/edit-pekerjaan/'.$item['pekerjaan_id']) ?>" class="btn btn-sm btn-primary" title="Edit Progress"><i class="fa fa-edit"></i></a>
                                     <a href="<?= base_url('pengawas/print-pekerjaan-with-pdf/'.$item['pekerjaan_id']) ?>" class="btn btn-sm btn-danger" title="Export To PDF"><i class="fa fa-print"></i></a>
                                     <a href="<?= base_url('pengawas/print-pekerjaan-with-excel/'.$item['pekerjaan_id']) ?>" class="btn btn-sm btn-success" title="Export To Excel"><i class="fa fa-print"></i></a>
                                 </div>
