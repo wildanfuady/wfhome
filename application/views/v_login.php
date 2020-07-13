@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Log In | WFhome</title>
+    <title>Log In | PT. Bumi Tirta Graha Cermerlang</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="<?= base_url('assets/template/') ?>plugins/fontawesome-free/css/all.min.css">
     <link rel="stylesheet" href="<?= base_url('assets/template/') ?>dist/css/adminlte.min.css">
@@ -11,7 +11,7 @@
 <body class="hold-transition login-page">
     <div class="login-box">
         <div class="login-logo">
-            <a href="<?= base_url('auth/login') ?>"><b>WF</b>Home</a>
+            <a href="<?= base_url('auth/login') ?>"><b>PT. Bumi Tirta</b><br/>Graha Cermerlang</a>
         </div>
         <div class="card">
             <div class="card-body login-card-body">
