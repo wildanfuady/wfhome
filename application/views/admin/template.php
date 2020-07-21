@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title><?php echo isset($judul) ? $judul." - " : '' ?>Dashboard Admin WFHome</title>
+    <title><?php echo isset($judul) ? $judul." - " : '' ?>Dashboard Admin PT. Bumi Tirta Graha Cemerlang</title>
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="<?= base_url('assets/template/') ?>plugins/fontawesome-free/css/all.min.css">
     <!-- Theme style -->
@@ -32,15 +32,15 @@
         <?php $this->load->view($content); ?>
         <aside class="control-sidebar control-sidebar-dark">
             <div class="p-3">
-                <h5>Tentang Developer</h5>
-                <div class="about_developer">
-                  <span><i class="fa fa-user"></i> &nbsp;Wildan Fuady</span><br/>
-                  <span><i class="fa fa-phone"></i> &nbsp;0877.2268.6655</span><br/>
-                  <span><i class="fa fa-envelope"></i> &nbsp;ilmucoding.com@gmail.com</span><br/>
-                  <span><i class="fa fa-globe"></i> &nbsp;https://ilmucoding.com</span><br/>
-                  <span><i class="fa fa-globe"></i> &nbsp;https://blog.ilmucoding.com</span><br/>
-                  <span><i class="fa fa-globe"></i> &nbsp;https://wildanfuady.github.io</span>
-                </div>
+                <!--<h5>Tentang Developer</h5>-->
+                <!--<div class="about_developer">-->
+                <!--  <span><i class="fa fa-user"></i> &nbsp;Wildan Fuady</span><br/>-->
+                <!--  <span><i class="fa fa-phone"></i> &nbsp;0877.2268.6655</span><br/>-->
+                <!--  <span><i class="fa fa-envelope"></i> &nbsp;ilmucoding.com@gmail.com</span><br/>-->
+                <!--  <span><i class="fa fa-globe"></i> &nbsp;https://ilmucoding.com</span><br/>-->
+                <!--  <span><i class="fa fa-globe"></i> &nbsp;https://blog.ilmucoding.com</span><br/>-->
+                <!--  <span><i class="fa fa-globe"></i> &nbsp;https://wildanfuady.github.io</span>-->
+                <!--</div>-->
             </div>
         </aside>
         <?php $this->load->view('partials/footer'); ?>

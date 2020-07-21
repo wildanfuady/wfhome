@@ -368,7 +368,7 @@ class Admin extends CI_Controller {
         $pdf->SetAutoPageBreak(true, 0);
  
         // Add Header
-        $pdf->Ln(10);
+        $pdf->Ln();
         $pdf->SetFont('', 'B', 12);
         $pdf->Cell(10, 8, "No", 1, 0, 'C');
         $pdf->Cell(55, 8, "Nama Pekerjaan", 1, 0, 'C');
@@ -382,13 +382,13 @@ class Admin extends CI_Controller {
         if($id == null){
             $pekerjaan = $this->pekerjaan->getPekerjaanForAdmin();
             foreach($pekerjaan as $k => $item) {
-                $pdf->Ln(0);
                 $this->addRow($pdf, $k+1, $item);
+                $pdf->Ln();
             }
         } else {
             $item = $this->pekerjaan->getPekerjaanForAdmin($id);
-            $pdf->Ln(0);
             $this->addRow($pdf, 1, $item);
+            $pdf->Ln();
         }
         $pdf->Output('Laporan Pekerjaan - '.$tanggal.'.pdf'); 
     }
