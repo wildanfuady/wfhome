@@ -1,24 +1,35 @@
--- --------------------------------------------------------
--- Host:                         localhost
--- Server version:               5.7.24 - MySQL Community Server (GPL)
--- Server OS:                    Win64
--- HeidiSQL Version:             10.2.0.5599
--- --------------------------------------------------------
+-- phpMyAdmin SQL Dump
+-- version 4.7.4
+-- https://www.phpmyadmin.net/
+--
+-- Host: 127.0.0.1
+-- Generation Time: Jul 19, 2020 at 04:15 AM
+-- Server version: 10.1.30-MariaDB
+-- PHP Version: 5.6.33
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
+SET time_zone = "+00:00";
+
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET NAMES utf8 */;
-/*!50503 SET NAMES utf8mb4 */;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
-/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
 
+--
+-- Database: `wfhome`
+--
 
--- Dumping database structure for wfhome
-CREATE DATABASE IF NOT EXISTS `wfhome` /*!40100 DEFAULT CHARACTER SET latin1 */;
-USE `wfhome`;
+-- --------------------------------------------------------
 
--- Dumping structure for table wfhome.pekerjaan
-CREATE TABLE IF NOT EXISTS `pekerjaan` (
-  `pekerjaan_id` int(11) NOT NULL AUTO_INCREMENT,
+--
+-- Table structure for table `pekerjaan`
+--
+
+CREATE TABLE `pekerjaan` (
+  `pekerjaan_id` int(11) NOT NULL,
   `pekerjaan_nama` varchar(250) NOT NULL,
   `pekerjaan_unit` int(11) NOT NULL DEFAULT '0',
   `pekerjaan_kontraktor` varchar(250) NOT NULL,
@@ -27,19 +38,24 @@ CREATE TABLE IF NOT EXISTS `pekerjaan` (
   `pekerjaan_deadline` datetime NOT NULL,
   `pekerjaan_progress` int(11) NOT NULL DEFAULT '0',
   `pekerjaan_status` varchar(50) NOT NULL DEFAULT '0',
-  `pekerjaan_keterangan` text,
-  PRIMARY KEY (`pekerjaan_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+  `pekerjaan_keterangan` text
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Dumping data for table wfhome.pekerjaan: ~1 rows (approximately)
-/*!40000 ALTER TABLE `pekerjaan` DISABLE KEYS */;
+--
+-- Dumping data for table `pekerjaan`
+--
+
 INSERT INTO `pekerjaan` (`pekerjaan_id`, `pekerjaan_nama`, `pekerjaan_unit`, `pekerjaan_kontraktor`, `pekerjaan_jumlah_pekerja`, `pekerjaan_tgl_mulai`, `pekerjaan_deadline`, `pekerjaan_progress`, `pekerjaan_status`, `pekerjaan_keterangan`) VALUES
-	(3, '1', 20, 'vdcdcdcdcd', 33, '2020-07-16 00:00:00', '2020-07-07 00:00:00', 0, 'Selesai', 'cdcsxssxs');
-/*!40000 ALTER TABLE `pekerjaan` ENABLE KEYS */;
+(3, '1', 20, 'vdcdcdcdcd', 33, '2020-07-16 00:00:00', '2020-07-07 00:00:00', 0, 'Selesai', 'cdcsxssxs');
 
--- Dumping structure for table wfhome.users
-CREATE TABLE IF NOT EXISTS `users` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `users`
+--
+
+CREATE TABLE `users` (
+  `id` int(11) NOT NULL,
   `username` varchar(50) NOT NULL,
   `fullname` varchar(250) NOT NULL,
   `email` varchar(100) NOT NULL,
@@ -48,18 +64,51 @@ CREATE TABLE IF NOT EXISTS `users` (
   `level` varchar(50) NOT NULL,
   `status` varchar(50) NOT NULL,
   `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
+  `updated_at` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Dumping data for table wfhome.users: ~2 rows (approximately)
-/*!40000 ALTER TABLE `users` DISABLE KEYS */;
+--
+-- Dumping data for table `users`
+--
+
 INSERT INTO `users` (`id`, `username`, `fullname`, `email`, `password`, `pass_show`, `level`, `status`, `created_at`, `updated_at`) VALUES
-	(1, 'admin', 'Administrator', 'admin@wfhome.com', '$2y$10$LzDeqop2NQP.9xLCor1iD./MYoT7wncPbHrLVZJa7PsZUMMmacKvm', 'admin123', 'admin', 'activated', '2020-06-26 13:03:47', '2020-06-26 13:03:48'),
-	(5, 'wildanfuady', 'Wildan Fuady', 'pengawas@gmail.com', '$2y$10$0Gim4OofeagnLM/939NS1epmHTVBxBp4UZi4TtsBLZE4Vr/E51VBW', 'admin123', 'pengawas', 'activated', '2020-06-26 20:52:58', NULL),
-	(7, 'wildanfuady', 'Wildan Fuady', 'manajer@gmail.com', '$2y$10$/X/IzQ.EfzjEynDjLFAHAOhqx0LMTgGyKODdvoGj8qU8PfKX128uK', 'admin123', 'manajer', 'activated', '2020-07-03 07:15:01', NULL);
-/*!40000 ALTER TABLE `users` ENABLE KEYS */;
+(1, 'admin', 'Administrator', 'admin@gmail.com', '$2y$10$LzDeqop2NQP.9xLCor1iD./MYoT7wncPbHrLVZJa7PsZUMMmacKvm', 'admin123', 'admin', 'activated', '2020-06-26 13:03:47', '2020-06-26 13:03:48'),
+(5, 'dayat123', 'Hidayat', 'pengawas@gmail.com', '$2y$10$srCcpGCCj7mjbWbb6DmYBeXAKqoaqzGG8GzQAj4DHuA5TKOKiugae', 'pengawas123', 'pengawas', 'activated', '2020-07-19 09:02:33', NULL),
+(7, 'igun123', 'Aryaguna Dhanes', 'manajer@gmail.com', '$2y$10$m16PLFHbNMZI1GgwIioMquBOg5fz5xtKTNN9eXzmv3KQRyFBbi/ha', 'manajer123', 'manajer', 'activated', '2020-07-19 09:02:11', NULL);
 
-/*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
-/*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `pekerjaan`
+--
+ALTER TABLE `pekerjaan`
+  ADD PRIMARY KEY (`pekerjaan_id`);
+
+--
+-- Indexes for table `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `pekerjaan`
+--
+ALTER TABLE `pekerjaan`
+  MODIFY `pekerjaan_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `users`
+--
+ALTER TABLE `users`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+COMMIT;
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
