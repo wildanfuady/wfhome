@@ -3,7 +3,7 @@
     <a href="<?= base_url('dashboard') ?>" class="brand-link">
       <img src="<?= base_url('assets/img/avatar.png') ?>" alt="WFHome" class="brand-image img-circle elevation-3"
            style="opacity: .8">
-      <span class="brand-text font-weight-light">WFHome</span>
+      <span class="brand-text font-weight-light">PT. BTGC</span>
     </a>
 
     <!-- Sidebar -->
@@ -14,7 +14,7 @@
           <img src="<?= base_url('assets/img/no-image2.png') ?>" class="img-circle elevation-2" alt="WFHome">
         </div>
         <div class="info">
-          <a href="<?= base_url('admin90/akun') ?>" class="d-block"><?= $this->session->userdata('name') ?></a>
+          <a href="<?= base_url('admin/akun') ?>" class="d-block"><?= $this->session->userdata('name') ?></a>
         </div>
       </div>
 
