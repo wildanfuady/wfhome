@@ -448,11 +448,11 @@ class Admin extends CI_Controller {
                             ->setCellValue('A' . $kolom, $nomor)
                             ->setCellValue('B' . $kolom, $tipe)
                             ->setCellValue('C' . $kolom, $data['pekerjaan_unit']." ".$keterangan)
-                            ->setCellValue('C' . $kolom, $data['pekerjaan_kontaktor'])
-                            ->setCellValue('D' . $kolom, $data['pekerjaan_jumlah_pekerja'])
-                            ->setCellValue('E' . $kolom, date('j F Y', strtotime($data['pekerjaan_tgl_mulai'])))
-                            ->setCellValue('F' . $kolom, date('j F Y', strtotime($data['pekerjaan_deadline'])))
-                            ->setCellValue('G' . $kolom, $data['pekerjaan_keterangan']);
+                            ->setCellValue('D' . $kolom, $data['pekerjaan_kontraktor'])
+                            ->setCellValue('E' . $kolom, $data['pekerjaan_jumlah_pekerja'])
+                            ->setCellValue('F' . $kolom, date('j F Y', strtotime($data['pekerjaan_tgl_mulai'])))
+                            ->setCellValue('G' . $kolom, date('j F Y', strtotime($data['pekerjaan_deadline'])))
+                            ->setCellValue('H' . $kolom, $data['pekerjaan_keterangan']);
                 $kolom++;
                 $nomor++;
             }
@@ -471,12 +471,12 @@ class Admin extends CI_Controller {
                 $spreadsheet->setActiveSheetIndex(0)
                                 ->setCellValue('A' . $kolom, $nomor)
                                 ->setCellValue('B' . $kolom, $tipe)
-                                ->setCellValue('C' . $kolom, $pekerjaan['pekerjaan_kontaktor']." ".$keterangan)
-                                ->setCellValue('C' . $kolom, $pekerjaan['pekerjaan_unit'])
-                                ->setCellValue('D' . $kolom, $pekerjaan['pekerjaan_jumlah_pekerja'])
-                                ->setCellValue('E' . $kolom, date('j F Y', strtotime($pekerjaan['pekerjaan_tgl_mulai'])))
-                                ->setCellValue('F' . $kolom, date('j F Y', strtotime($pekerjaan['pekerjaan_deadline'])))
-                                ->setCellValue('G' . $kolom, $pekerjaan['pekerjaan_keterangan']);
+                                ->setCellValue('D' . $kolom, $pekerjaan['pekerjaan_unit'])
+                                ->setCellValue('C' . $kolom, $pekerjaan['pekerjaan_kontraktor']." ".$keterangan)
+                                ->setCellValue('E' . $kolom, $pekerjaan['pekerjaan_jumlah_pekerja'])
+                                ->setCellValue('F' . $kolom, date('j F Y', strtotime($pekerjaan['pekerjaan_tgl_mulai'])))
+                                ->setCellValue('G' . $kolom, date('j F Y', strtotime($pekerjaan['pekerjaan_deadline'])))
+                                ->setCellValue('H' . $kolom, $pekerjaan['pekerjaan_keterangan']);
             } else {
                 $this->session->set_flashdata('error', 'Gagal Membuat Laporan Pekerjaan');
                 redirect(base_url('admin/pekerjaan'));
