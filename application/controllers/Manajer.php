@@ -173,12 +173,12 @@ class Manajer extends CI_Controller {
         if($id == null){
             $pekerjaan = $this->pekerjaan->getPekerjaan();
             foreach($pekerjaan as $k => $item) {
-                $pdf->Ln(0);
+                $pdf->Ln(10);
                 $this->addRow($pdf, $k+1, $item);
             }
         } else {
             $item = $this->pekerjaan->getPekerjaan($id);
-            $pdf->Ln(0);
+            $pdf->Ln(10);
             $this->addRow($pdf, 1, $item);
         }
         $pdf->Output('Laporan Pekerjaan - '.$tanggal.'.pdf'); 
