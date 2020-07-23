@@ -95,6 +95,7 @@
                               <?php
                               $deadline = new DateTime($item['pekerjaan_deadline']);
                               $perbedaan = $deadline->diff(new DateTime());
+                              echo $perbedaan;
                               if($perbedaan->d <= 7){
                                 echo "Deadline Pekerjaan Tinggal Seminggu Lagi!";
                               }
