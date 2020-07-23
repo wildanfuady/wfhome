@@ -71,6 +71,7 @@
                                   $keterangan = " unit";
                                 } else if($item['pekerjaan_nama'] == 2){
                                   echo "Subsidi (Type 25) Rumah";
+                                  $keterangan = " unit";
                                 } else {
                                   echo "Sarana dan Prasarana";
                                   $keterangan = " /m<sup>2</sup>";

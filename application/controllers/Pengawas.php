@@ -304,7 +304,7 @@ class Pengawas extends CI_Controller {
                 $errors = $this->form_validation->error_array();
                 $this->session->set_flashdata('errors', $errors);
                 $this->session->set_flashdata('inputs', $this->input->post());
-                redirect(base_url('pengawas/tambah-pekerjaan'));
+                redirect(base_url('pengawas/edit_pekerjaan/'.$id));
 
             } else {
                 // mengambil selisih hari antara mulai dan tanggal deadline
@@ -393,10 +393,11 @@ class Pengawas extends CI_Controller {
                 'password'      => password_hash($password, PASSWORD_DEFAULT),
                 'pass_show'     => $password
             ];
-
+            $this->session->set_userdata('name', $fullname);
             $ubah   = $this->auth->update($data, $id);
 
             if($ubah == true){
+                
                 $this->session->set_flashdata('info', 'Berhasil Mengubah Akun');
                 redirect(base_url('pengawas/akun'));
             } else {

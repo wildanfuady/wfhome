@@ -77,7 +77,7 @@ $db['default'] = array(
 	'dsn'	=> '',
 	'hostname' => 'localhost',
 	'username' => 'ilmucodi_wfhome',
-	'password' => '+Q)?%n[CUDmf',
+	'password' => '}Gtb=+8PY0?O',
 	'database' => 'ilmucodi_wfhome',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',

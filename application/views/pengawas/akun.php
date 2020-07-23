@@ -24,7 +24,7 @@
             <div class="card-header">
               Manajemen Akun
             </div>
-            <?= form_open('admin/update_akun') ?>
+            <?= form_open('pengawas/update_akun') ?>
             <div class="card-body">
               <?php
                 if(!empty($this->session->flashdata('info'))) { ?>
