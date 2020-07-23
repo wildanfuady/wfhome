@@ -93,12 +93,20 @@
                             <td><?= date('d-m-Y', strtotime($item['pekerjaan_deadline'])) ?></td>
                             <td>
                               <?php
-                              $deadline = new DateTime($item['pekerjaan_deadline']);
-                              $perbedaan = $deadline->diff(new DateTime());
-                              echo $perbedaan;
-                              if($perbedaan->d <= 7){
-                                echo "Deadline Pekerjaan Tinggal Seminggu Lagi!";
+                              $date_now = date('Y-m-d');
+                              $date_deadline = date('Y-m-d', strtotime($item['pekerjaan_deadline']));
+
+                              $deadline = new DateTime($date_deadline);
+                              $tgl_sekarang = new DateTime($date_now);
+
+                              if($deadline < $tgl_sekarang ){
+                                if($item['pekerjaan_status'] != "Selesai"){
+                                  echo "Pekerjaan Melebihi Batas Deadline";
+                                } else {
+                                  echo "Pekerjaan telah selesai";
+                                }
                               }
+
                               ?>
                             </td>
                             <td><?= $item['pekerjaan_keterangan'] ?></td>

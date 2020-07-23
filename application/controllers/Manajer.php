@@ -79,7 +79,7 @@ class Manajer extends CI_Controller {
                 'password'      => password_hash($password, PASSWORD_DEFAULT),
                 'pass_show'     => $password
             ];
-
+            $this->session->set_userdata('name', $fullname);
             $ubah   = $this->auth->update($data, $id);
 
             if($ubah == true){
