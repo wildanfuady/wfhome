@@ -111,10 +111,12 @@
                         <tr>
                             <th>No</th>
                             <th>Nama Pekerjaan</th>
+                            <th>Jumlah</th>
                             <th>Nama Kontraktor</th>
                             <th>Jumlah Pekerja</th>
                             <th>Tanggal Mulai</th>
                             <th>Deadline</th>
+                            <th>Progress</th>
                             <th>Keterangan</th>
                             <th>Status</th>
                         </tr>
@@ -127,17 +129,21 @@
                               <?php 
                                 if($item['pekerjaan_nama'] == 1){
                                   echo "Kormersil (Type 32) Rumah";
+                                  $keterangan = " unit";
                                 } else if($item['pekerjaan_nama'] == 2){
                                   echo "Subsidi (Type 25) Rumah";
                                 } else {
                                   echo "Sarana dan Prasarana";
+                                  $keterangan = " /m<sup>2</sup>";
                                 }
                               ?>
                             </td>
+                            <td><?= $item['pekerjaan_unit'].$keterangan ?></td>
                             <td><?= $item['pekerjaan_kontraktor'] ?></td>
                             <td><?= $item['pekerjaan_jumlah_pekerja'] ?></td>
                             <td><?= date('d-m-Y', strtotime($item['pekerjaan_tgl_mulai'])) ?></td>
                             <td><?= date('d-m-Y', strtotime($item['pekerjaan_deadline'])) ?></td>
+                            <td><?= $item['pekerjaan_progress'] ?>%</td>
                             <td><?= $item['pekerjaan_keterangan'] ?></td>
                             <td>
                               <?php 

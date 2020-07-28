@@ -102,23 +102,35 @@ class CI_Controller {
 
 	public function cek_login_admin()
 	{
-		if($this->session->userdata('level') != "admin" || $this->session->userdata('status') != "activated"){
-            redirect(base_url('/'));
-        }
+		if($this->session->userdata('level') != "admin"){
+			$this->session->sess_destroy();
+			redirect(base_url('/'));
+		} else if($this->session->userdata('status') != "activated"){
+			$this->session->sess_destroy();
+			redirect(base_url('/'));
+		} else {}
 	}
 
 	public function cek_login_pengawas()
 	{
-		if($this->session->userdata('level') != "pengawas" || $this->session->userdata('status') != "activated"){
-            redirect(base_url('/'));
-        }
+		if($this->session->userdata('level') != "pengawas"){
+			$this->session->sess_destroy();
+			redirect(base_url('/'));
+		} else if($this->session->userdata('status') != "activated"){
+			$this->session->sess_destroy();
+			redirect(base_url('/'));
+		} else {}
 	}
 
 	public function cek_login_manajer()
 	{
-		if($this->session->userdata('level') != "manajer" || $this->session->userdata('status') != "activated"){
-            redirect(base_url('/'));
-        }
+		if($this->session->userdata('level') != "manajer"){
+			$this->session->sess_destroy();
+			redirect(base_url('/'));
+		} else if($this->session->userdata('status') != "activated"){
+			$this->session->sess_destroy();
+			redirect(base_url('/'));
+		} else {}
 	}
 
 }

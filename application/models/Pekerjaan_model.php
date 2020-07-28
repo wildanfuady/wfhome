@@ -15,6 +15,15 @@ class Pekerjaan_model extends CI_Model
         }
     }
 
+    public function getUploads($id = null)
+    {
+        if($id != null){
+            return $this->db->get_where('uploads', ['pekerjaan_id' => $id])->result_array();
+        } else {
+            return $this->db->get('uploads')->result_array();
+        }
+    }
+
     public function getPekerjaanForAdmin($id = null)
     {
         if($id != null){
@@ -57,6 +66,12 @@ class Pekerjaan_model extends CI_Model
         } else {
             return false;
         }
+    }
+
+    public function updateUploads($data, $id)
+    {
+        $query = $this->db->where('upload_id', $id)->update('uploads', $data);
+        return $query;
     }
     public function delete($id)
     {

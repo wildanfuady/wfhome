@@ -76,9 +76,9 @@ $query_builder = TRUE;
 $db['default'] = array(
 	'dsn'	=> '',
 	'hostname' => 'localhost',
-	'username' => 'ilmucodi_wfhome',
-	'password' => '}Gtb=+8PY0?O',
-	'database' => 'ilmucodi_wfhome',
+	'username' => 'root',
+	'password' => '',
+	'database' => 'wfhome',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
 	'pconnect' => FALSE,

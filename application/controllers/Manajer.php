@@ -28,7 +28,8 @@ class Manajer extends CI_Controller {
             'pekerjaan_total'       => $this->pekerjaan->getCountPekerjaan(),
             'pekerjaan_selesai'     => $this->pekerjaan->getCountPekerjaan('Selesai'),
             'pekerjaan_progress'    => $this->pekerjaan->getCountPekerjaan('Progress'),
-            'pekerjaan_reject'      => $this->pekerjaan->getCountPekerjaan('Reject')
+            'pekerjaan_reject'      => $this->pekerjaan->getCountPekerjaan('Reject'),
+            'sidebar_collapse'     => true,
         ];
         
         $this->load->view('manajer/template', $data);
@@ -101,6 +102,7 @@ class Manajer extends CI_Controller {
             'pekerjaan'         => $this->pekerjaan->getPekerjaan(),
             'plugin_datatable'  => true,
             'plugin_edit_with_modal'     => true,
+            'sidebar_collapse'     => true,
         ];
         
         $this->load->view('manajer/template', $data);
@@ -126,6 +128,26 @@ class Manajer extends CI_Controller {
                 $this->session->set_flashdata('error', 'Gagal Mengubah Status Pekerjaan');
                 redirect(base_url('manajer/pekerjaan'));
             }
+        }
+    }
+
+    public function detail_pekerjaan($id = null)
+    {
+        $pekerjaan = $this->pekerjaan->getPekerjaan($id);
+        $uploads = $this->pekerjaan->getUploads($id);
+
+        if(!empty($pekerjaan)){
+
+            $data = [
+                'judul' 	=> 'Detail Pekerjaan',
+                'content'	=> 'manajer/pekerjaan/detail',
+                'pekerjaan' => $pekerjaan,
+                'uploads'   => $uploads
+            ];
+            
+            $this->load->view('manajer/template', $data);
+        } else {
+            echo "Tidak ada data";
         }
     }
 

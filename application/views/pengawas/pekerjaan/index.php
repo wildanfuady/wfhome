@@ -58,8 +58,10 @@
                             <th>Jumlah Pekerja</th>
                             <th>Tanggal Mulai</th>
                             <th>Deadline</th>
-                            <th>Memo</th>
+                            <th>Progress</th>
                             <th>Keterangan</th>
+                            <th>Memo</th>
+                            <th>Status</th>
                             <th>Action</th>
                         </tr>
                         </thead>
@@ -91,6 +93,8 @@
                             <td><?= $item['pekerjaan_jumlah_pekerja'] ?></td>
                             <td><?= date('d-m-Y', strtotime($item['pekerjaan_tgl_mulai'])) ?></td>
                             <td><?= date('d-m-Y', strtotime($item['pekerjaan_deadline'])) ?></td>
+                            <td><?= $item['pekerjaan_progress'] ?>%</td>
+                            <td><?= $item['pekerjaan_keterangan'] ?></td>
                             <td>
                               <?php
                               $date_now = date('Y-m-d');
@@ -119,9 +123,22 @@
 
                               ?>
                             </td>
-                            <td><?= $item['pekerjaan_keterangan'] ?></td>
+                            <td>
+                              <?php 
+                              if($item['pekerjaan_status'] == "Progress"){
+                                echo "<div class='btn btn-info btn-sm'>$item[pekerjaan_status]</div>";
+                              } else if($item['pekerjaan_status'] == "Selesai"){
+                                echo "<div class='btn btn-success btn-sm'>$item[pekerjaan_status]</div>";
+                              } else if($item['pekerjaan_status'] == "Pekerjaan Baru"){
+                                echo "<div class='btn btn-secondary btn-sm'>$item[pekerjaan_status]</div>";
+                              } else {
+                                echo "<div class='btn btn-danger btn-sm'>$item[pekerjaan_status]</div>";
+                              }
+                              ?>
+                            </td>
                             <td>
                                 <div class="btn-group">
+                                    <a href="<?= base_url('pengawas/detail-pekerjaan/'.$item['pekerjaan_id']) ?>" class="btn btn-sm btn-info" title="Detail Progress"><i class="fa fa-eye"></i></a>
                                     <a href="<?= base_url('pengawas/edit-pekerjaan/'.$item['pekerjaan_id']) ?>" class="btn btn-sm btn-primary" title="Edit Progress"><i class="fa fa-edit"></i></a>
                                     <a href="<?= base_url('pengawas/print-pekerjaan-with-pdf/'.$item['pekerjaan_id']) ?>" class="btn btn-sm btn-danger" title="Export To PDF"><i class="fa fa-print"></i></a>
                                     <a href="<?= base_url('pengawas/print-pekerjaan-with-excel/'.$item['pekerjaan_id']) ?>" class="btn btn-sm btn-success" title="Export To Excel"><i class="fa fa-print"></i></a>

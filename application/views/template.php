@@ -106,7 +106,7 @@
     </script>
 </head>
 
-<body>
+<body class="hold-transition sidebar-mini <?= isset($sidebar_collapse) == true ? 'sidebar-collapse' : '' ?>">
     <?php $this->load->view('partials/header', ['toko' => $toko]); ?>
     <?php if(isset($page)){ $this->load->view('partials/sidebar_normal', ['toko' => $toko]); } else { $this->load->view('partials/sidebar_home', ['toko' => $toko]); }; ?>
     <?php $this->load->view($content, ['toko' => $toko]); ?>

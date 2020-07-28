@@ -31,7 +31,7 @@
     }
     </style>
 </head>
-<body class="hold-transition sidebar-mini">
+<body class="hold-transition sidebar-mini <?= isset($sidebar_collapse) == true ? 'sidebar-collapse' : '' ?>">
     <div class="wrapper">
         <?php $this->load->view('partials/navbar'); ?>
         <?php $this->load->view('pengawas/sidebar'); ?>

@@ -111,12 +111,15 @@
                         <tr>
                             <th>No</th>
                             <th>Nama Pekerjaan</th>
+                            <th>Jumlah</th>
                             <th>Nama Kontraktor</th>
                             <th>Jumlah Pekerja</th>
                             <th>Tanggal Mulai</th>
                             <th>Deadline</th>
+                            <th>Progress</th>
                             <th>Keterangan</th>
-                            <th>Action</th>
+                            <th>Memo</th>
+                            <th>Status</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -124,7 +127,7 @@
                         <tr>
                             <td><?= $key + 1 ?></td>
                             <td>
-                            <?php 
+                              <?php 
                                 if($item['pekerjaan_nama'] == 1){
                                   echo "Kormersil (Type 32) Rumah";
                                 } else if($item['pekerjaan_nama'] == 2){
@@ -134,16 +137,61 @@
                                 }
                               ?>
                             </td>
+                            <td>
+                              <?php
+                              if($item['pekerjaan_nama'] == 1 || $item['pekerjaan_nama'] == 2){
+                                echo $item['pekerjaan_unit']." unit";
+                              } else {
+                                echo $item['pekerjaan_unit']." /m<sup>2</sup>";
+                              }
+                              ?>
+                            </td>
                             <td><?= $item['pekerjaan_kontraktor'] ?></td>
                             <td><?= $item['pekerjaan_jumlah_pekerja'] ?></td>
                             <td><?= date('d-m-Y', strtotime($item['pekerjaan_tgl_mulai'])) ?></td>
                             <td><?= date('d-m-Y', strtotime($item['pekerjaan_deadline'])) ?></td>
+                            <td><?= $item['pekerjaan_progress'] ?>%</td>
                             <td><?= $item['pekerjaan_keterangan'] ?></td>
                             <td>
-                                <div class="btn-group">
-                                    <a href="<?= base_url('pengawas/print-pekerjaan-with-pdf/'.$item['pekerjaan_id']) ?>" class="btn btn-sm btn-danger" title="Export To PDF"><i class="fa fa-print"></i></a>
-                                    <a href="<?= base_url('pengawas/print-pekerjaan-with-excel/'.$item['pekerjaan_id']) ?>" class="btn btn-sm btn-success" title="Export To Excel"><i class="fa fa-print"></i></a>
-                                </div>
+                              <?php
+                              $date_now = date('Y-m-d');
+                              $date_deadline = date('Y-m-d', strtotime($item['pekerjaan_deadline']));
+
+                              $deadline = new DateTime($date_deadline);
+                              $tgl_sekarang = new DateTime($date_now);
+                              
+                              $selisih = $deadline->diff($tgl_sekarang)->days;
+                              // echo $selisih;
+                              if($deadline < $tgl_sekarang ){
+                                if($item['pekerjaan_status'] != "Selesai"){
+                                  echo "Pekerjaan Melebihi Batas Deadline";
+                                } else {
+                                  echo "Pekerjaan telah selesai";
+                                }
+                              } else if($selisih == 1 || $selisih == 0){
+                                  echo "Deadline tinggal 1 hari lagi!";
+                              } else if($selisih == 3){
+                                  echo "Deadline tinggal 3 hari lagi!";
+                              } else if($selisih <= 7){
+                                  echo "Deadline tinggal seminggu lagi!";
+                              } else {
+                                  echo "";
+                              }
+
+                              ?>
+                            </td>
+                            <td>
+                              <?php 
+                              if($item['pekerjaan_status'] == "Progress"){
+                                echo "<div class='btn btn-info btn-sm'>$item[pekerjaan_status]</div>";
+                              } else if($item['pekerjaan_status'] == "Selesai"){
+                                echo "<div class='btn btn-success btn-sm'>$item[pekerjaan_status]</div>";
+                              } else if($item['pekerjaan_status'] == "Pekerjaan Baru"){
+                                echo "<div class='btn btn-secondary btn-sm'>$item[pekerjaan_status]</div>";
+                              } else {
+                                echo "<div class='btn btn-danger btn-sm'>$item[pekerjaan_status]</div>";
+                              }
+                              ?>
                             </td>
                         </tr>
                         <?php } ?>

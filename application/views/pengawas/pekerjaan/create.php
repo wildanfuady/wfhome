@@ -25,7 +25,7 @@
             <div class="card-header">
               <strong>Tambah Data Pekerjaan Baru</strong>
             </div>
-            <?= form_open('pengawas/store-pekerjaan') ?>
+            <?= form_open_multipart('pengawas/store-pekerjaan') ?>
             <div class="card-body">
               <?php
                 $inputs = $this->session->flashdata('inputs');
@@ -84,6 +84,7 @@
                     </div>
                     <div class="form-group">
                       <label for="">Jumlah Pekerja</label>
+                      <br>
                       <?= form_input('pekerjaan_jumlah_pekerja', $inputs['pekerjaan_jumlah_pekerja'], ['class' => 'form-control', 'placeholder' => 'Jumlah Pekerja Dihitung Otomatis Oleh Sistem', 'readonly' => 'readonly']) ?>
                     </div>
                   </div>
@@ -96,15 +97,34 @@
                     </div>
                     <div class="form-group">
                       <label for="">Progress</label>
-                      <?= form_input('pekerjaan_progress', $inputs['pekerjaan_progress'], ['class' => 'form-control datepicker', 'placeholder' => 'Progress Pekerjaan', 'required' => 'required', 'autocomplete' => 'off']) ?>
+                      <?= form_dropdown('pekerjaan_progress', ['' => 'Pilih Progress',0 => '0 %', 30 => '30 %', 60 => '60 %', 100 => '100 %',], $inputs['pekerjaan_progress'], ['class' => 'form-control datepicker', 'placeholder' => 'Progress Pekerjaan', 'required' => 'required', 'autocomplete' => 'off', 'type' => 'number']) ?>
                     </div>
                   </div>
                   
                 </div>
                 
                 <div class="form-group">
-                    <label for="">Keterangan</label>
-                    <?= form_textarea('pekerjaan_keterangan', $inputs['pekerjaan_keterangan'], ['class' => 'form-control', 'placeholder' => 'Keterangan', 'required' => 'required', 'autocomplete' => 'off']) ?>
+                    <label for="">Keterangan Progress</label>
+                    <?= form_textarea('pekerjaan_keterangan', $inputs['pekerjaan_keterangan'], ['class' => 'form-control', 'placeholder' => 'Masukan keterangan progress', 'required' => 'required', 'autocomplete' => 'off']) ?>
+                </div>
+                <div class="form-group">
+                    <label for="">Bukti Pekerjaan</label>
+                    <br>
+                    <small>1. Bagian Depan</small>
+                    <br>
+                    <?= form_upload('foto1', ['class' => 'form-control']) ?>
+                    <br>
+                    <small>2. Bagian Kiri</small>
+                    <br>
+                    <?= form_upload('foto2', ['class' => 'form-control']) ?>
+                    <br>
+                    <small>3. Bagian Kanan</small>
+                    <br>
+                    <?= form_upload('foto3', ['class' => 'form-control']) ?>
+                    <br>
+                    <small>4. Bagian Belakang</small>
+                    <br>
+                    <?= form_upload('foto4', ['class' => 'form-control']) ?>
                 </div>
                 
             </div>

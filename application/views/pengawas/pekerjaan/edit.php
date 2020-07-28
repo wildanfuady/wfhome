@@ -25,7 +25,7 @@
             <div class="card-header">
               <strong>Edit Data Pekerjaan</strong>
             </div>
-            <?= form_open('pengawas/update-pekerjaan/'.$pekerjaan['pekerjaan_id']) ?>
+            <?= form_open_multipart('pengawas/update-pekerjaan/'.$pekerjaan['pekerjaan_id']) ?>
             <div class="card-body">
               <?php
                 $inputs = $this->session->flashdata('inputs');
@@ -101,7 +101,7 @@
                     </div>
                     <div class="form-group">
                       <label for="">Progress</label>
-                      <?= form_input('pekerjaan_progress', $pekerjaan['pekerjaan_progress'], ['class' => 'form-control datepicker', 'placeholder' => 'Progress Pekerjaan', 'required' => 'required', 'autocomplete' => 'off']) ?>
+                      <?= form_dropdown('pekerjaan_progress', ['' => 'Pilih Progress',0 => '0 %', 30 => '30 %', 60 => '60 %', 100 => '100 %',], $pekerjaan['pekerjaan_progress'], ['class' => 'form-control datepicker', 'placeholder' => 'Progress Pekerjaan', 'required' => 'required', 'autocomplete' => 'off', 'type' => 'number']) ?>
                     </div>
                   </div>
                   
@@ -111,11 +111,44 @@
                     <label for="">Keterangan</label>
                     <?= form_textarea('pekerjaan_keterangan', $pekerjaan['pekerjaan_keterangan'], ['class' => 'form-control', 'placeholder' => 'Keterangan', 'required' => 'required', 'autocomplete' => 'off']) ?>
                 </div>
+
+                <div class="form-group">
+                    <label for="">Bukti Pekerjaan</label>
+                    <br>
+                    <div class="row">
+                    <?php foreach($uploads as $key => $foto){ ?>
+                        <div class="col-md-3">
+                            <a href="<?= base_url('assets/uploads/'.$foto['foto']) ?>" target="_blank"><img src="<?= base_url('assets/uploads/'.$foto['foto']) ?>" class="img-responsive" style="width:100%"></a>
+                            <?= form_hidden('id_foto'.($key+1), $foto['upload_id']) ?>
+                        </div>
+                    <?php } ?>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="">Ubah Bukti Pekerjaan</label>
+                    <br>
+                    <small>1. Bagian Depan</small>
+                    <br>
+                    <?= form_upload('foto1', ['class' => 'form-control']) ?>
+                    <br>
+                    <small>2. Bagian Kiri</small>
+                    <br>
+                    <?= form_upload('foto2', ['class' => 'form-control']) ?>
+                    <br>
+                    <small>3. Bagian Kanan</small>
+                    <br>
+                    <?= form_upload('foto3', ['class' => 'form-control']) ?>
+                    <br>
+                    <small>4. Bagian Belakang</small>
+                    <br>
+                    <?= form_upload('foto4', ['class' => 'form-control']) ?>
+                </div>
                 
             </div>
             <div class="card-footer">
-                <button type="reset" class="btn btn-danger"><i class="fa fa-times-circle"></i> RESET</button>
-                <button type="submit" class="btn btn-success float-right"><i class="fa fa-check-circle"></i> UPDATE</button>
+              <button type="reset" class="btn btn-danger"><i class="fa fa-times-circle"></i> RESET</button>
+              <button type="submit" class="btn btn-success float-right"><i class="fa fa-check-circle"></i> UPDATE</button>
             </div>
             <?= form_close() ?>
           </div>

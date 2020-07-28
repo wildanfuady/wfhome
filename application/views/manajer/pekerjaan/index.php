@@ -57,6 +57,7 @@
                             <th>Jumlah Pekerja</th>
                             <th>Tanggal Mulai</th>
                             <th>Deadline</th>
+                            <th>Progress</th>
                             <th>Keterangan</th>
                             <th>Status</th>
                             <th>Action</th>
@@ -84,6 +85,7 @@
                             <td><?= $item['pekerjaan_jumlah_pekerja'] ?></td>
                             <td><?= date('d-m-Y', strtotime($item['pekerjaan_tgl_mulai'])) ?></td>
                             <td><?= date('d-m-Y', strtotime($item['pekerjaan_deadline'])) ?></td>
+                            <td><?= $item['pekerjaan_progress'] ?>%</td>
                             <td><?= $item['pekerjaan_keterangan'] ?></td>
                             <td>
                               <?php 
@@ -100,8 +102,9 @@
                             </td>
                             <td>
                                 <div class="btn-group">
-                                    <button type="button" onclick="showModalEdit('<?= base_url('manajer/status-pekerjaan/'.$item['pekerjaan_id']) ?>', '<?= $item['pekerjaan_status'] ?>');" class="btn btn-sm btn-primary" title="Ubah Status Pekerjaan"><i class="fa fa-edit"></i></button>
-                                    <a href="<?= base_url('manajer/hapus-pekerjaan/'.$item['pekerjaan_id']) ?>" class="btn btn-sm btn-danger" title="Hapus Pekerjaan" onclick="return confirm('Apakah Anda yakin ingin menghapus data pekerjaan ini?')"><i class="fa fa-trash-alt"></i></a>
+                                  <a href="<?= base_url('manajer/detail-pekerjaan/'.$item['pekerjaan_id']) ?>" class="btn btn-sm btn-info" title="Detail Pekerjaan" ><i class="fa fa-eye"></i></a>
+                                  <button type="button" onclick="showModalEdit('<?= base_url('manajer/status-pekerjaan/'.$item['pekerjaan_id']) ?>', '<?= $item['pekerjaan_status'] ?>');" class="btn btn-sm btn-primary" title="Ubah Status Pekerjaan"><i class="fa fa-edit"></i></button>
+                                  <a href="<?= base_url('manajer/hapus-pekerjaan/'.$item['pekerjaan_id']) ?>" class="btn btn-sm btn-danger" title="Hapus Pekerjaan" onclick="return confirm('Apakah Anda yakin ingin menghapus data pekerjaan ini?')"><i class="fa fa-trash-alt"></i></a>
                                 </div>
                             </td>
                         </tr>
