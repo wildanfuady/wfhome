@@ -32,7 +32,7 @@
                       <label for="">Tipe Pekerjaan</label>
                       <br>
                       <?= $pekerjaan['pekerjaan_nama'] == 1 ? 'Komersil (Type 32) Rumah' : '' ?>
-                      <?= $pekerjaan['pekerjaan_nama'] == 2 ? 'Subsidi (Type 32) Rumah' : '' ?>
+                      <?= $pekerjaan['pekerjaan_nama'] == 2 ? 'Subsidi (Type 25) Rumah' : '' ?>
                       <?= $pekerjaan['pekerjaan_nama'] == 3 ? 'Sarana dan Pra Sarana' : '' ?>
                     </div>
                   </div>
