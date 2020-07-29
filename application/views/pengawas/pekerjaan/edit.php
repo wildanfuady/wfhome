@@ -118,6 +118,10 @@
                     <div class="row">
                     <?php foreach($uploads as $key => $foto){ ?>
                         <div class="col-md-3">
+                            <span><?= $key == 0 ? 'Foto Tampak Depan' : '' ?></span>
+                            <span><?= $key == 1 ? 'Foto Tampak Kiri' : '' ?></span>
+                            <span><?= $key == 2 ? 'Foto Tampak Kanan' : '' ?></span>
+                            <span><?= $key == 3 ? 'Foto Tampak Belakang' : '' ?></span>
                             <a href="<?= base_url('assets/uploads/'.$foto['foto']) ?>" target="_blank"><img src="<?= base_url('assets/uploads/'.$foto['foto']) ?>" class="img-responsive" style="width:100%"></a>
                             <?= form_hidden('id_foto'.($key+1), $foto['upload_id']) ?>
                         </div>

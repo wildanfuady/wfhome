@@ -205,10 +205,22 @@ class Pengawas extends CI_Controller {
         $this->form_validation->set_rules('pekerjaan_deadline', 'Tanggal Deadline', 'required');
         $this->form_validation->set_rules('pekerjaan_progress', 'Progress', 'numeric|required|min_length[1]|max_length[50]');
         $this->form_validation->set_rules('pekerjaan_keterangan', 'Keterangan', 'required|min_length[5]|max_length[50]');
-        $this->form_validation->set_rules('foto1', 'Foto Tampak Depan', 'required');
-        $this->form_validation->set_rules('foto2', 'Foto Tampak Kiri', 'required');
-        $this->form_validation->set_rules('foto3', 'Foto Tampak Kanan', 'required');
-        $this->form_validation->set_rules('foto4', 'Foto Tampak Belakang', 'required');
+        if (empty($_FILES['foto1']['name']))
+        {
+            $this->form_validation->set_rules('foto1', 'Foto Tampak Depan', 'required');
+        }
+        if (empty($_FILES['foto2']['name']))
+        {
+            $this->form_validation->set_rules('foto2', 'Foto Tampak Kiri', 'required');
+        }
+        if (empty($_FILES['foto3']['name']))
+        {
+            $this->form_validation->set_rules('foto3', 'Foto Tampak Kanan', 'required');
+        }
+        if (empty($_FILES['foto4']['name']))
+        {
+            $this->form_validation->set_rules('foto4', 'Foto Tampak Belakang', 'required');
+        }
 
         if($this->form_validation->run() == FALSE){
 
@@ -348,7 +360,7 @@ class Pengawas extends CI_Controller {
         if(!empty($pekerjaan)){
 
             $data = [
-                'judul' 	=> 'Detail Pekerjaan',
+                'judul' 	=> 'Edit Pekerjaan',
                 'content'	=> 'pengawas/pekerjaan/edit',
                 'pekerjaan' => $pekerjaan,
                 'uploads'   => $uploads

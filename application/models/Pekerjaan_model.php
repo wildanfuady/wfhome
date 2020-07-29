@@ -11,7 +11,7 @@ class Pekerjaan_model extends CI_Model
         if($id != null){
             return $this->db->get_where($this->table, [$this->primaryKey => $id])->row_array();
         } else {
-            return $this->db->get($this->table)->result_array();
+            return $this->db->order_by('pekerjaan_id', 'desc')->get($this->table)->result_array();
         }
     }
 
