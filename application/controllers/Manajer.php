@@ -115,17 +115,24 @@ class Manajer extends CI_Controller {
 
             $status = $this->input->post('status_pekerjaan', true);
 
-            $data = [
-                'pekerjaan_status' => $status
-            ];
+            if($pekerjaan['pekerjaan_progress'] == 100){
 
-            $ubah = $this->pekerjaan->update($data, $id);
+                $data = [
+                    'pekerjaan_status' => $status
+                ];
 
-            if($ubah == true){
-                $this->session->set_flashdata('info', 'Berhasil Mengubah Status Pekerjaan');
-                redirect(base_url('manajer/pekerjaan'));
+                $ubah = $this->pekerjaan->update($data, $id);
+
+                if($ubah == true){
+                    $this->session->set_flashdata('info', 'Berhasil Mengubah Status Pekerjaan');
+                    redirect(base_url('manajer/pekerjaan'));
+                } else {
+                    $this->session->set_flashdata('error', 'Gagal Mengubah Status Pekerjaan');
+                    redirect(base_url('manajer/pekerjaan'));
+                }
+
             } else {
-                $this->session->set_flashdata('error', 'Gagal Mengubah Status Pekerjaan');
+                $this->session->set_flashdata('error', 'Anda tidak dapat memberikan status pekerjaan selesai jika progress belum 100%');
                 redirect(base_url('manajer/pekerjaan'));
             }
         }
