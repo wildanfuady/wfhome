@@ -77,6 +77,7 @@ class Pengawas extends CI_Controller {
             $keterangan = " unit";
         } else if($item['pekerjaan_nama'] == 2){
             $tipe = "Subsidi (Type 25) Rumah";
+            $keterangan = " unit";
         } else {
             $tipe = "Sarana dan Prasarana";
             $keterangan = " /m<sup>2</sup>";
@@ -118,6 +119,7 @@ class Pengawas extends CI_Controller {
                     $keterangan = " unit";
                 } else if($data['pekerjaan_nama'] == 2){
                     $tipe = "Subsidi (Type 25) Rumah";
+                    $keterangan = " unit";
                 } else {
                     $tipe = "Sarana dan Prasarana";
                     $keterangan = " /m2";
