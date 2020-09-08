@@ -17,6 +17,22 @@ class Auth_model extends CI_Model
         }
     }
 
+    public function cek_login_user_where_email($email)
+    {
+        $hasil = $this->db->where('email', $email)
+                            ->limit(1)->get('users');
+        if($hasil->num_rows() > 0){
+            return $hasil->row_array();
+        } else {
+            return array();
+        }
+    }
+
+    public function get_login_user_where_email($email)
+    {
+        return $this->db->get_where('users', ['email' => $email])->row_array();
+    }
+
     public function getAccount($id)
     {
         return $this->db->get_where($this->table, [$this->primaryKey => $id])->row_array();
